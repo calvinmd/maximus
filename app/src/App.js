@@ -1,30 +1,25 @@
 import React from "react";
-import { DrizzleContext } from "@drizzle/react-plugin";
+import { Switch, Route } from "react-router-dom";
+import { drizzleReactHooks } from "@drizzle/react-plugin";
 import { Drizzle } from "@drizzle/store";
+
 import drizzleOptions from "./drizzleOptions";
-import MyComponent from "./MyComponent";
-import "./App.css";
+import { Layout } from "./layouts/Layout";
+import { Home } from "./pages/Home";
 
 const drizzle = new Drizzle(drizzleOptions);
 
-const App = () => {
-  return (
-    <DrizzleContext.Provider drizzle={drizzle}>
-      <DrizzleContext.Consumer>
-        {drizzleContext => {
-          const { drizzle, drizzleState, initialized } = drizzleContext;
-
-          if (!initialized) {
-            return "Loading..."
-          }
-
-          return (
-            <MyComponent drizzle={drizzle} drizzleState={drizzleState} />
-          )
-        }}
-      </DrizzleContext.Consumer>
-    </DrizzleContext.Provider>
-  );
-}
+const App = () => (
+  <drizzleReactHooks.DrizzleProvider drizzle={drizzle}>
+    <Switch>
+      <Layout>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/borrow" component={Home} />
+        <Route exact path="/liquidity" component={Home} />
+        <Route exact path="/governance" component={Home} />
+        </Layout>
+    </Switch>
+  </drizzleReactHooks.DrizzleProvider>
+);
 
 export default App;
