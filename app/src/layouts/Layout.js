@@ -1,29 +1,22 @@
-import React from "react";
-import { Container, Row, Col } from "reactstrap";
+import React from 'react';
 
-import { Header } from "./Header";
-import { Sidebar } from "./Sidebar";
-import { Footer } from "./Footer";
+import { Header } from './Header';
+import { Footer } from './Footer';
 
 const Layout = ({ children }) => (
-  <Container fluid>
-    <Row>
-      <Col sm="2">
-        <Sidebar />
-      </Col>
-      <Col>
-        <Row>
-          <Header />
-        </Row>
-        <Row>
-          {children}
-        </Row>
-        <Row>
-          <Footer />
-        </Row>
-      </Col>
-    </Row>
-  </Container>
+  <div>
+    <div className='flex flex-col sm:max-w-screen-lg min-h-screen w-full h-full bg-white ml-auto mr-auto'>
+      <div className='h-16 sm:h-20'>
+        <Header />
+      </div>
+      <div className='h-auto'>
+        {children}
+      </div>
+      <div className='h-12 sm:h-16'>
+        <Footer />
+      </div>
+      </div>
+  </div>
 );
 
 export { Layout };

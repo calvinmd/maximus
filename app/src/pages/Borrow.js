@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Home = () => {
+const Borrow = () => {
   return (
     <div>
-      <h1>Home</h1>
+      <h1>Borrow</h1>
     </div>
   );
 };
 
-export { Home };
+export { Borrow };

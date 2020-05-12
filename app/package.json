@@ -6,14 +6,11 @@
     "@drizzle/react-components": "^1.5.1",
     "@drizzle/react-plugin": "^1.5.1",
     "@drizzle/store": "^1.5.1",
-    "bootstrap": "^4.4.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
-    "reactstrap": "^8.4.1",
-    "tailwindcss": "^1.4.5",
-    "typescript": "^3.8.3"
+    "tailwindcss": "^1.4.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,5 +32,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-plugin-import": "^2.20.2"
   }
 }
