@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@drizzle/react-components": "^1.5.1",
-    "@drizzle/react-plugin": "^1.5.1",
-    "@drizzle/store": "^1.5.1",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
-    "react-router-dom": "^5.1.2",
+    "@drizzle/react-components": "1.5.1",
+    "@drizzle/react-plugin": "1.5.1",
+    "@drizzle/store": "1.5.1",
+    "react": "16.11.0",
+    "react-dom": "16.11.0",
+    "react-router-dom": "5.1.2",
     "react-scripts": "3.2.0",
-    "tailwindcss": "^1.4.5"
+    "tailwindcss": "1.4.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -34,6 +34,6 @@
     ]
   },
   "devDependencies": {
-    "eslint-plugin-import": "^2.20.2"
+    "eslint-plugin-import": "2.20.2"
   }
 }
