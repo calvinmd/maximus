@@ -11,11 +11,13 @@ networkName.set(5, 'Goerli');
 networkName.set(42, 'Kovan');
 networkName.set(5777, 'Maximus Local');
 
+const getAddressLabel = (addr) => `${addr.substring(0, 4)}...${addr.substring(addr.length - 4)}`
+
 const WalletButton = () => {
   const [count, setCount] = useState(0);
   console.log('Change count: ', count);
   const hasEthereum = typeof window !== 'undefined' && typeof window.ethereum !== 'undefined';
-  const selectedAddress = get(window, 'ethereum.selectedAddress');
+  const selectedAddress = get(window, 'ethereum.selectedAddress', '');
   const networkId = Number(get(window, 'ethereum.networkVersion'));
   console.log('networkId: ', networkId);
 
@@ -28,7 +30,7 @@ const WalletButton = () => {
     onClick = () => window.open("https://metamask.io/");
   } else if (selectedAddress && networkId) {
     console.log('Wallet connected');
-    buttonLabel = `${selectedAddress} (${networkName.get(networkId) || 'Unknown'})`;
+    buttonLabel = `${getAddressLabel(selectedAddress)} (${networkName.get(networkId) || 'Unknown'})`;
   } else {
     buttonLabel = "Connect Wallet";
     onClick = () => {
