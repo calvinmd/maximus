@@ -9,13 +9,13 @@ const Layout = ({ children }) => (
       <div className='h-16 sm:h-20'>
         <Header />
       </div>
-      <div className='h-auto'>
+      <div className='max-auto h-auto flex-grow'>
         {children}
       </div>
-      <div className='h-12 sm:h-16'>
+      <div className='h-12 sm:h-16 text-center'>
         <Footer />
       </div>
-      </div>
+    </div>
   </div>
 );
 
