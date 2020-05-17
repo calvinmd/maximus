@@ -51,7 +51,7 @@ const WalletButton = () => {
         setCount(count + 1);
       }, 1000);
     }
-  }, [count, networkId, hasEthereum, get(window, 'ethereum.selectedAddress')]);
+  }, [count, networkId, hasEthereum, selectedAddress]);
 
   return (
     <Button
