@@ -31,6 +31,15 @@ const WalletButton = () => {
   } else if (selectedAddress && networkId) {
     console.log('Wallet connected');
     buttonLabel = `${getAddressLabel(selectedAddress)} (${networkName.get(networkId) || 'Unknown'})`;
+    onClick = () => {
+      if (get(window, 'navigator.clipboard.writeText')) {
+        window.navigator.clipboard.writeText(selectedAddress).then(function () {
+          alert("Contract address copied to clipboard: " + selectedAddress);
+        }, function (err) {
+          console.error('Could not copy contract address to clipboard: ', err);
+        });
+      }
+    };
   } else {
     buttonLabel = "Connect Wallet";
     onClick = () => {
