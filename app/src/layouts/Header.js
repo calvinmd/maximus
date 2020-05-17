@@ -1,18 +1,10 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { WalletButton } from '../components/WalletButton';
 
-const LOGO_URL = process.env.PUBLIC_URL + '/logo.svg';
-const WORDMARK_URL = process.env.PUBLIC_URL + '/wordmark.svg';
-
-const connect = () => {
-  if (typeof window.ethereum !== 'undefined') {
-    return alert("Metamask needed");
-  }
-  console.log("ethereum: ", window.ethereum);
-  return window.ethereum.enable();
-}
+// const LOGO_URL = process.env.PUBLIC_URL + '/logo.svg';
+// const WORDMARK_URL = process.env.PUBLIC_URL + '/wordmark.svg';
 
 const Header = () => (
   <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
@@ -37,9 +29,7 @@ const Header = () => (
         </Link>
       </div>
       <div>
-        <Link to="#" onClick={connect} className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">
-          Connect Wallet
-        </Link>
+        <WalletButton />
       </div>
     </div>
   </nav >
