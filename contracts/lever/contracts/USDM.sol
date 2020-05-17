@@ -2,9 +2,9 @@ import 'openzeppelin-solidity/contracts/token/ERC20/ERC20.sol';
 
 pragma solidity ^0.5.2;
 
-contract USDC is ERC20 {
-  string public name = "USDC";
-  string public symbol = "USDC";
+contract USDM is ERC20 {
+  string public name = "USDM";
+  string public symbol = "USDM";
   uint public decimals = 18;
 
   constructor () public {

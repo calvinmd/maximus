@@ -15,26 +15,26 @@ contract('TFCompound', addresses => {
     this.tfCompoundDAI.setTokens(this.dai.address, this.cDai.address, this.cEther.address)
     console.log('addresses', addresses)
     console.log('tfCompoundDAI.address', this.tfCompoundDAI.address)
-    console.log('tfCompoundUSDC.address', this.tfCompoundUSDC.address)
+    console.log('tfCompoundUSDM.address', this.tfCompoundUSDM.address)
   })
 
   describe('TFCompound', async function() {
     it('should exist', async function() {
       assert.isOk(this.tfCompoundDAI)
-      assert.isOk(this.tfCompoundUSDC)
+      assert.isOk(this.tfCompoundUSDM)
     })
     it('should invest', async function() {
       assert.isOk(this.tfCompoundDAI.invest)
-      assert.isOk(this.tfCompoundUSDC.invest)
+      assert.isOk(this.tfCompoundUSDM.invest)
 
       const address0daiBalance = await this.dai.balanceOf.call(addresses[0])
       const daiTokenBalance = await this.dai.balanceOf.call(this.dai.address)
       const cDaiTokenBalance = await this.cDai.balanceOf.call(this.cDai.address)
-      const cUsdcTokenBalance = await this.cUsdc.balanceOf.call(this.cUsdc.address)
+      const mUsdmTokenBalance = await this.mUsdm.balanceOf.call(this.mUsdm.address)
       console.log('address0daiBalance', address0daiBalance.toString())
       console.log('daiTokenBalance', daiTokenBalance.toString())
       console.log('cDaiTokenBalance', cDaiTokenBalance.toString())
-      console.log('cUsdcTokenBalance', cUsdcTokenBalance.toString())
+      console.log('mUsdmTokenBalance', mUsdmTokenBalance.toString())
       // const lenderTokenBalanceBefore = await this.token.balanceOf.call(addresses[0])
       // console.log('lenderTokenBalanceBefore: ', lenderTokenBalanceBefore.toString())
       // await web3.eth.sendTransaction({ to: addresses[0], from: lender, value: toWei('1', 'ether')})
