@@ -12,13 +12,12 @@ networkName.set(42, 'Kovan');
 networkName.set(8545, 'Localhost');
 
 const WalletButton = () => {
-  const [addressChangeCount, setAddressChangeCount] = useState(0);
-  const [networkChangeCount, setNetworkChangeCount] = useState(0);
-  console.log('Address changed ', addressChangeCount, ' times.');
-  console.log('Network changed ', networkChangeCount, ' times.');
+  const [count, setCount] = useState(0);
+  console.log('Change count: ', count);
   const hasEthereum = typeof window !== 'undefined' && typeof window.ethereum !== 'undefined';
   const selectedAddress = get(window, 'ethereum.selectedAddress');
   const networkId = Number(get(window, 'ethereum.networkVersion'));
+  console.log('networkId: ', networkId);
 
   let onClick = () => { };
   let buttonLabel = "Checking connection...";
@@ -41,16 +40,16 @@ const WalletButton = () => {
   useEffect(() => {
     window.ethereum.on('accountsChanged', (account) => {
       console.log('accountsChanged: ', account);
-      setAddressChangeCount(addressChangeCount + 1);
+      setCount(count + 1);
     });
-  }, [typeof window !== 'undefined' && typeof window.ethereum !== 'undefined' && window.ethereum.selectedAddress]);
-
-  useEffect(() => {
-    window.ethereum.on('networkChanged', (network) => {
-      console.log('networkChanged ', network);
-      setNetworkChangeCount(networkChangeCount + 1);
-    });
-  }, [typeof window !== 'undefined' && typeof window.ethereum !== 'undefined' && window.ethereum.networkVersion]);
+    if (hasEthereum && !networkId) {
+      // Network ID not retrieved yet, wait a bit then try again
+      setTimeout(() => {
+        console.log("Wait for networkId to become available...");
+        setCount(count + 1);
+      }, 1000);
+    }
+  }, [count, networkId, hasEthereum, get(window, 'ethereum.selectedAddress')]);
 
   return (
     <Button
