@@ -8,7 +8,7 @@ module.exports = {
     develop: { // default with truffle unbox is 7545, but we can use develop to test changes, ex. truffle migrate --network develop
       host: "127.0.0.1",
       port: 8545,
-      network_id: "*",
+      network_id: "5777",
       gasPrice: 1,
       gas: 100000000000,
     },
