@@ -9,7 +9,7 @@ networkName.set(3, 'Ropsten');
 networkName.set(4, 'Rinkeby');
 networkName.set(5, 'Goerli');
 networkName.set(42, 'Kovan');
-networkName.set(8545, 'Localhost');
+networkName.set(5777, 'Maximus Local');
 
 const WalletButton = () => {
   const [count, setCount] = useState(0);
@@ -28,7 +28,7 @@ const WalletButton = () => {
     onClick = () => window.open("https://metamask.io/");
   } else if (selectedAddress && networkId) {
     console.log('Wallet connected');
-    buttonLabel = `${selectedAddress} (${networkName.get(networkId)})`;
+    buttonLabel = `${selectedAddress} (${networkName.get(networkId) || 'Unknown'})`;
   } else {
     buttonLabel = "Connect Wallet";
     onClick = () => {
