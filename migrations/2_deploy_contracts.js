@@ -11,8 +11,8 @@ const USDMInterestRateModel = artifacts.require('./USDMInterestRateModel.sol')
 const ETHInterestRateModel = artifacts.require('./ETHInterestRateModel.sol')
 const Unitroller = artifacts.require('./Unitroller.sol')
 const Comptroller = artifacts.require('./Comptroller.sol')
-const CErc20 = artifacts.require('./CErc20.sol')
-const CEther = artifacts.require('./CEther.sol')
+const MErc20 = artifacts.require('./MErc20.sol')
+const MEther = artifacts.require('./MEther.sol')
 const PriceOracleProxy = artifacts.require('./PriceOracleProxy.sol')
 const PriceOracle = artifacts.require('./_PriceOracle.sol')
 
@@ -61,31 +61,31 @@ module.exports = function(deployer, network, accounts) {
     await comptroller._setLiquidationIncentive(toWei('1.05', 'ether'))
     await comptroller._setMaxAssets(10)
 
-    await deployer.deploy(CErc20, dai.address, comptroller.address, daiInterestRateModel.address, toWei('0.2', 'gether'), 'Compound Dai', 'cDAI', '8')
-    const cdai = await CErc20.deployed()
+    await deployer.deploy(MErc20, dai.address, comptroller.address, daiInterestRateModel.address, toWei('0.2', 'gether'), 'Compound Dai', 'cDAI', '8')
+    const cdai = await MErc20.deployed()
 
-    const mUsdm = await CErc20.new(usdm.address, comptroller.address, usdmInterestRateModel.address, toWei('0.2', 'finney'), 'Compound Usdc', 'mUSDM', '8')
+    const mUsdm = await MErc20.new(usdm.address, comptroller.address, usdmInterestRateModel.address, toWei('0.2', 'finney'), 'Compound Usdc', 'mUSDM', '8')
 
-    await deployer.deploy(CEther, comptroller.address, ethInterestRateModel.address, toWei('0.2', 'gether'), 'Compound Ether', 'cETH', '8')
-    const cEth = await CEther.deployed()
+    await deployer.deploy(MEther, comptroller.address, ethInterestRateModel.address, toWei('0.2', 'gether'), 'Compound Ether', 'mETH', '8')
+    const mEth = await MEther.deployed()
 
     await comptroller._supportMarket(cdai.address)
     await comptroller._supportMarket(mUsdm.address)
-    await comptroller._supportMarket(cEth.address)
+    await comptroller._supportMarket(mEth.address)
 
     await deployer.deploy(PriceOracle, accounts[0], dai.address, makerMedianizer.address, usdm.address, makerMedianizer.address)
     const priceOracle = await PriceOracle.deployed()
 
-    await deployer.deploy(PriceOracleProxy, comptroller.address, priceOracle.address, cEth.address)
+    await deployer.deploy(PriceOracleProxy, comptroller.address, priceOracle.address, mEth.address)
     const priceOracleProxy = await PriceOracleProxy.deployed()
 
     await priceOracle.setPrices([padLeft(numberToHex(1), 40)], [toWei('0.0049911026', 'ether')])
     await priceOracle.setPrices([padLeft(numberToHex(2), 40)], [toWei('0.0049911026', 'ether')])
 
     await comptroller._setPriceOracle(priceOracleProxy.address)
-    await comptroller._setCollateralFactor(cEth.address, toWei('0.75', 'ether'))
+    await comptroller._setCollateralFactor(mEth.address, toWei('0.75', 'ether'))
 
-    await comptroller.enterMarkets([cdai.address, mUsdm.address, cEth.address])
+    await comptroller.enterMarkets([cdai.address, mUsdm.address, mEth.address])
 
     await dai.approve(cdai.address, toWei('100', 'ether'))
     await cdai.mint(toWei('100', 'ether'))
@@ -97,8 +97,8 @@ module.exports = function(deployer, network, accounts) {
     // await deployer.deploy(Medianizer);
     // const medianizer = await Medianizer.deployed();
 
-    const tfCompoundDAI = await deployer.deploy(TFCompound, dai.address, cdai.address, cEth.address)
-    const tfCompoundUSDM = await deployer.deploy(TFCompound, usdm.address, mUsdm.address, cEth.address)
+    const tfCompoundDAI = await deployer.deploy(TFCompound, dai.address, cdai.address, mEth.address)
+    const tfCompoundUSDM = await deployer.deploy(TFCompound, usdm.address, mUsdm.address, mEth.address)
 
     const stats = JSON.stringify({
         DaiInterestRateModel: daiInterestRateModel.address,
@@ -109,7 +109,7 @@ module.exports = function(deployer, network, accounts) {
         DAI: dai.address,
         USDM: usdm.address,
         cDAI: cdai.address,
-        cETH: cEth.address,
+        mETH: mEth.address,
         mUSDM: mUsdm.address,
         _MakerMedianizer: makerMedianizer.address,
         TFCompoundDAI: tfCompoundDAI.address,

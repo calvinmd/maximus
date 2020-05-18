@@ -1,17 +1,17 @@
-import './CToken.sol';
+import './MToken.sol';
 import './EIP20NonStandardInterface.sol';
 
 pragma solidity ^0.5.8;
 
 
 /**
- * @title Compound's CEther Contract
- * @notice CToken which wraps Ether
+ * @title Compound's MEther Contract
+ * @notice MToken which wraps Ether
  * @author Compound
  */
-contract CEther is CToken {
+contract MEther is MToken {
     /**
-     * @notice Construct a new CEther money market
+     * @notice Construct a new MEther money market
      * @param comptroller_ The address of the Comptroller
      * @param interestRateModel_ The address of the interest rate model
      * @param initialExchangeRateMantissa_ The initial exchange rate, scaled by 1e18
@@ -25,7 +25,7 @@ contract CEther is CToken {
                 string memory name_,
                 string memory symbol_,
                 uint decimals_) public
-    CToken(comptroller_, interestRateModel_, initialExchangeRateMantissa_, name_, symbol_, decimals_) {}
+    MToken(comptroller_, interestRateModel_, initialExchangeRateMantissa_, name_, symbol_, decimals_) {}
 
     /*** User Interface ***/
 
@@ -90,12 +90,12 @@ contract CEther is CToken {
      * @param borrower The borrower of this cToken to be liquidated
      * @param cTokenCollateral The market in which to seize collateral from the borrower
      */
-    function liquidateBorrow(address borrower, CToken cTokenCollateral) external payable {
+    function liquidateBorrow(address borrower, MToken cTokenCollateral) external payable {
         requireNoError(liquidateBorrowInternal(borrower, msg.value, cTokenCollateral), "liquidateBorrow failed");
     }
 
     /**
-     * @notice Send Ether to CEther to mint
+     * @notice Send Ether to MEther to mint
      */
     function () external payable {
         requireNoError(mintInternal(msg.value), "mint failed");

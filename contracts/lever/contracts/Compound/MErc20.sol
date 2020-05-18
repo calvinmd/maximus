@@ -1,18 +1,18 @@
-import './CToken.sol';
+import './MToken.sol';
 import './EIP20NonStandardInterface.sol';
 
 pragma solidity ^0.5.8;
 
 
 /**
- * @title Compound's CErc20 Contract
- * @notice CTokens which wrap an EIP-20 underlying
+ * @title Compound's MErc20 Contract
+ * @notice MTokens which wrap an EIP-20 underlying
  * @author Compound
  */
-contract CErc20 is CToken {
+contract MErc20 is MToken {
 
     /**
-     * @notice Underlying asset for this CToken
+     * @notice Underlying asset for this MToken
      */
     address public underlying;
 
@@ -33,7 +33,7 @@ contract CErc20 is CToken {
                 string memory name_,
                 string memory symbol_,
                 uint decimals_) public
-    CToken(comptroller_, interestRateModel_, initialExchangeRateMantissa_, name_, symbol_, decimals_) {
+    MToken(comptroller_, interestRateModel_, initialExchangeRateMantissa_, name_, symbol_, decimals_) {
         // Set underlying
         underlying = underlying_;
         EIP20Interface(underlying).totalSupply(); // Sanity check the underlying
@@ -107,7 +107,7 @@ contract CErc20 is CToken {
      * @param repayAmount The amount of the underlying borrowed asset to repay
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function liquidateBorrow(address borrower, uint repayAmount, CToken cTokenCollateral) external returns (uint) {
+    function liquidateBorrow(address borrower, uint repayAmount, MToken cTokenCollateral) external returns (uint) {
         return liquidateBorrowInternal(borrower, repayAmount, cTokenCollateral);
     }
 

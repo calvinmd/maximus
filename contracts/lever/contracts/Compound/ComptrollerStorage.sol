@@ -1,5 +1,5 @@
 import './PriceOracle.sol';
-import './CToken.sol';
+import './MToken.sol';
 
 pragma solidity ^0.5.8;
 
@@ -52,6 +52,6 @@ contract ComptrollerV1Storage is UnitrollerAdminStorage {
     /**
      * @notice Per-account mapping of "assets you are in", capped by maxAssets
      */
-    mapping(address => CToken[]) public accountAssets;
+    mapping(address => MToken[]) public accountAssets;
 
 }

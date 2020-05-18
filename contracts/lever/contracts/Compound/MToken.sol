@@ -8,15 +8,15 @@ import './InterestRateModel.sol';
 pragma solidity ^0.5.8;
 
 /**
- * @title Compound's CToken Contract
- * @notice Abstract base for CTokens
+ * @title Compound's MToken Contract
+ * @notice Abstract base for MTokens
  * @author Compound
  */
-contract CToken is EIP20Interface, Exponential, TokenErrorReporter, ReentrancyGuard {
+contract MToken is EIP20Interface, Exponential, TokenErrorReporter, ReentrancyGuard {
     /**
-     * @notice Indicator that this is a CToken contract (for inspection)
+     * @notice Indicator that this is a MToken contract (for inspection)
      */
-    bool public constant isCToken = true;
+    bool public constant isMToken = true;
 
     /**
      * @notice EIP-20 token name for this token
@@ -64,7 +64,7 @@ contract CToken is EIP20Interface, Exponential, TokenErrorReporter, ReentrancyGu
     InterestRateModel public interestRateModel;
 
     /**
-     * @notice Initial exchange rate used when minting the first CTokens (used when totalSupply = 0)
+     * @notice Initial exchange rate used when minting the first MTokens (used when totalSupply = 0)
      */
     uint public initialExchangeRateMantissa;
 
@@ -519,7 +519,7 @@ contract CToken is EIP20Interface, Exponential, TokenErrorReporter, ReentrancyGu
     }
 
     /**
-     * @notice Calculates the exchange rate from the underlying to the CToken
+     * @notice Calculates the exchange rate from the underlying to the MToken
      * @dev This function does not accrue interest before calculating the exchange rate
      * @return Calculated exchange rate scaled by 1e18
      */
@@ -530,7 +530,7 @@ contract CToken is EIP20Interface, Exponential, TokenErrorReporter, ReentrancyGu
     }
 
     /**
-     * @notice Calculates the exchange rate from the underlying to the CToken
+     * @notice Calculates the exchange rate from the underlying to the MToken
      * @dev This function does not accrue interest before calculating the exchange rate
      * @return (error code, calculated exchange rate scaled by 1e18)
      */
@@ -1148,7 +1148,7 @@ contract CToken is EIP20Interface, Exponential, TokenErrorReporter, ReentrancyGu
      * @param repayAmount The amount of the underlying borrowed asset to repay
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function liquidateBorrowInternal(address borrower, uint repayAmount, CToken cTokenCollateral) internal nonReentrant returns (uint) {
+    function liquidateBorrowInternal(address borrower, uint repayAmount, MToken cTokenCollateral) internal nonReentrant returns (uint) {
         uint error = accrueInterest();
         if (error != uint(Error.NO_ERROR)) {
             // accrueInterest emits logs on errors, but we still want to log the fact that an attempted liquidation failed
@@ -1174,7 +1174,7 @@ contract CToken is EIP20Interface, Exponential, TokenErrorReporter, ReentrancyGu
      * @param repayAmount The amount of the underlying borrowed asset to repay
      * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)
      */
-    function liquidateBorrowFresh(address liquidator, address borrower, uint repayAmount, CToken cTokenCollateral) internal returns (uint) {
+    function liquidateBorrowFresh(address liquidator, address borrower, uint repayAmount, MToken cTokenCollateral) internal returns (uint) {
         /* Fail if liquidate not allowed */
         uint allowed = comptroller.liquidateBorrowAllowed(address(this), address(cTokenCollateral), liquidator, borrower, repayAmount);
         if (allowed != 0) {

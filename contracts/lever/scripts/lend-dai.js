@@ -1,5 +1,5 @@
-const CEther = artifacts.require('CEther')
-const CErc20 = artifacts.require('CErc20')
+const MEther = artifacts.require('MEther')
+const MErc20 = artifacts.require('MErc20')
 const DAI = artifacts.require('DAI')
 const Comptroller = artifacts.require('Comptroller')
 const BN = require('bn.js')
@@ -15,16 +15,16 @@ module.exports = async () => {
         const address = process.argv[4] || accounts[0]
         const amount = process.argv[5] || 1000
 
-        // const cEther = await CEther.at(DeploymentInfo.Contracts.cETH)
-        const cEther = await CEther.deployed()
+        // const mEther = await MEther.at(DeploymentInfo.Contracts.mETH)
+        const mEther = await MEther.deployed()
         // const dai = await FaucetToken.at(DeploymentInfo.Contracts.DAI)
         const dai = await DAI.deployed()
-        // const cDAI = await CErc20.at(DeploymentInfo.Contracts.cDAI)
-        const cDAI = await CErc20.deployed()
+        // const cDAI = await MErc20.at(DeploymentInfo.Contracts.cDAI)
+        const cDAI = await MErc20.deployed()
         const comptroller = await Comptroller.at(await cDAI.comptroller())
 
         // Enter Markets (Executed once per deployment)
-        await comptroller.enterMarkets([cDAI.address, cEther.address], { from: address })
+        await comptroller.enterMarkets([cDAI.address, mEther.address], { from: address })
         // Lender Lend DAI
         // await dai.allocateTo(address, daiWithDecimals(amount))
         console.log(`Lender Dai balance before lending: ${(web3.utils.fromWei(await dai.balanceOf(address)).toString())}`)

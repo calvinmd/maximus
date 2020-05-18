@@ -1,5 +1,5 @@
-const CEther = artifacts.require('CEther')
-const CErc20 = artifacts.require('CErc20')
+const MEther = artifacts.require('MEther')
+const MErc20 = artifacts.require('MErc20')
 const DAI = artifacts.require('DAI')
 const Comptroller = artifacts.require('Comptroller')
 const BN = require('bn.js')
@@ -13,9 +13,9 @@ module.exports = async () => {
 
       const accounts = require('../accounts.json')
 
-      const cEther = await CEther.deployed()
+      const mEther = await MEther.deployed()
       const dai = await DAI.deployed()
-      const cDai = await CErc20.deployed()
+      const cDai = await MErc20.deployed()
       const comptroller = await Comptroller.at(await cDai.comptroller())
 
       for (let i = 0; i < accounts.length; i++) {

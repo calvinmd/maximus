@@ -1,18 +1,18 @@
 const ExampleDaiCoin = artifacts.require('./lever/ExampleDaiCoin.sol');
-const CErc20 = artifacts.require('./lever/CErc20.sol');
-const CEther = artifacts.require('./lever/CEther.sol');
+const MErc20 = artifacts.require('./lever/MErc20.sol');
+const MEther = artifacts.require('./lever/MEther.sol');
 const Comptroller = artifacts.require('./lever/Comptroller.sol')
 const TFCompound = artifacts.require('./lever/TFCompound.sol');
 
 contract('TFCompound', addresses => {
   beforeEach(async function () {
     this.dai = await ExampleDaiCoin.deployed();
-    this.cDai = await CErc20.deployed();
-    this.cEther = await CEther.deployed();
+    this.cDai = await MErc20.deployed();
+    this.mEther = await MEther.deployed();
 
     this.tfCompoundDAI = await TFCompound.deployed();
     this.comptroller = await Comptroller.deployed();
-    this.tfCompoundDAI.setTokens(this.dai.address, this.cDai.address, this.cEther.address)
+    this.tfCompoundDAI.setTokens(this.dai.address, this.cDai.address, this.mEther.address)
     console.log('addresses', addresses)
     console.log('tfCompoundDAI.address', this.tfCompoundDAI.address)
     console.log('tfCompoundUSDM.address', this.tfCompoundUSDM.address)
@@ -38,7 +38,7 @@ contract('TFCompound', addresses => {
       // const lenderTokenBalanceBefore = await this.token.balanceOf.call(addresses[0])
       // console.log('lenderTokenBalanceBefore: ', lenderTokenBalanceBefore.toString())
       // await web3.eth.sendTransaction({ to: addresses[0], from: lender, value: toWei('1', 'ether')})
-      // await this.cEther.mint({ from: addresses[0], value: toWei('1', 'ether')})
+      // await this.mEther.mint({ from: addresses[0], value: toWei('1', 'ether')})
       // const cErc20BalAfterDeposit2 = await this.cErc20.balanceOf.call(addresses[0])
       // console.log('cErc20BalAfterDeposit2: ', cErc20BalAfterDeposit2.toString())
 

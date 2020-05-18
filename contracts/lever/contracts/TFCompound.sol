@@ -1,25 +1,25 @@
 pragma solidity ^0.5.8;
 
-import "./Compound/CErc20.sol";
+import "./Compound/MErc20.sol";
 import "./Compound/EIP20Interface.sol";
-import "./Compound/CEther.sol";
+import "./Compound/MEther.sol";
 
 
 contract TFCompound {
   EIP20Interface underlying;
-  CErc20 cToken;
-  CEther cEther;
+  MErc20 cToken;
+  MEther mEther;
 
-  constructor(address _underlying, address _cToken, address payable _cEther) public {
+  constructor(address _underlying, address _cToken, address payable _mEther) public {
     underlying = EIP20Interface(_underlying);
-    cToken = CErc20(_cToken);
-    cEther = CEther(_cEther);
+    cToken = MErc20(_cToken);
+    mEther = MEther(_mEther);
   }
 
-  function setTokens(address _underlying, address _cToken, address payable _cEther) public {
+  function setTokens(address _underlying, address _cToken, address payable _mEther) public {
     underlying = EIP20Interface(_underlying);
-    cToken = CErc20(_cToken);
-    cEther = CEther(_cEther);
+    cToken = MErc20(_cToken);
+    mEther = MEther(_mEther);
   }
 
   function invest(uint _amount) public returns (uint) {

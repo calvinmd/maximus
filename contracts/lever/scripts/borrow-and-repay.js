@@ -1,6 +1,6 @@
 // const DeploymentInfo = require('../networks/development')
-const CEther = artifacts.require('CEther')
-const CErc20 = artifacts.require('CErc20')
+const MEther = artifacts.require('MEther')
+const MErc20 = artifacts.require('MErc20')
 // const FaucetToken = artifacts.require('FaucetToken')
 const DAI = artifacts.require('DAI')
 const Comptroller = artifacts.require('Comptroller')
@@ -19,14 +19,14 @@ module.exports = async () => {
         const lender = accounts[0]
         const borrower = accounts[1]
 
-        const cEther = await CEther.deployed()
+        const mEther = await MEther.deployed()
         const dai = await DAI.deployed()
-        const cDai = await CErc20.deployed()
+        const cDai = await MErc20.deployed()
         const comptroller = await Comptroller.at(await cDai.comptroller())
 
 
         // Enter Markets (Executed once per deployment)
-        await comptroller.enterMarkets([cDai.address, cEther.address], {from: borrower})
+        await comptroller.enterMarkets([cDai.address, mEther.address], {from: borrower})
 
 
         // Lender Lend DAI (need more than 1 lender otherwise some in-balance occurs)
@@ -41,7 +41,7 @@ module.exports = async () => {
 
 
         // Borrower Lend ETH
-        await cEther.mint({value:tenEthInWei, from: borrower})
+        await mEther.mint({value:tenEthInWei, from: borrower})
 
 
         // Borrower Borrow DAI

@@ -1,7 +1,7 @@
 import { get } from 'lodash'
 
 // import ERC20JSON from '../contracts/ERC20.json'
-import cErc20JSON from '../contracts/CErc20.json'
+import cErc20JSON from '../contracts/MErc20.json'
 import comptrollerJSON from '../contracts/Comptroller.json'
 
 
@@ -17,7 +17,7 @@ const addresses = {
     "DAI": "0xF0b863d178e711648fE362ADD304a5952A421566",
     "USDM": "0x5B817cc3eE101e1Aa24e53F3374144e3597637e2",
     "cDAI": "0x9B931C73ac1425297Db72c9bf59729aD57F1d080",
-    "cETH": "0x3Ae9cEFaCa54D19eD6512b58A8Fb0263babD9E9A",
+    "mETH": "0x3Ae9cEFaCa54D19eD6512b58A8Fb0263babD9E9A",
     "mUSDM": "0x96290FE92dF3DFBdB2eB24F692311e1E47327025",
     "_MakerMedianizer": "0xE35BD28E9B4a6b179FFA76B800b431513ED1bC1a",
     "TFCompoundDAI": "0x05AF4085F8529CBBA0026de1A00302B93c6eaEC8",
@@ -31,11 +31,14 @@ function getAddresses(networkId) {
   return get(addresses, networkId, addresses.local)
 }
 
-const comptroller = window.web3.eth.contract(comptrollerJSON.abi).at(getAddresses(window.ethereum.networkId).Comptroller)
-const cETH = window.web3.eth.contract(cErc20JSON.abi).at(getAddresses(window.ethereum.networkId).cETH)
-const mUSDM = window.web3.eth.contract(cErc20JSON.abi).at(getAddresses(window.ethereum.networkId).mUSDM)
+export const comptroller = window.web3.eth.contract(comptrollerJSON.abi).at(getAddresses(window.ethereum.networkId).Comptroller)
+export const mETH = window.web3.eth.contract(cErc20JSON.abi).at(getAddresses(window.ethereum.networkId).mETH)
+export const mUSDM = window.web3.eth.contract(cErc20JSON.abi).at(getAddresses(window.ethereum.networkId).mUSDM)
 // const USDM = new window.web3.eth.contract(ERC20JSON.abi).at(getAddresses(window.ethereum.networkId).USDM)
 
+console.log('comptroller ', comptroller)
+console.log('mETH ', mETH)
+console.log('mUSDM ', mUSDM)
 
 /*
  * 1. Enter a market (USDM)
@@ -68,7 +71,7 @@ export async function lendETH(amount, address, options = {}) {
   const addr = address || window.ethereum.selectedAddress
   if (!addr) throw new Error('Ethereum Address required.')
   try {
-    return cETH.mint(amount, {
+    return mETH.mint(amount, {
       from: addr,
       gas: 2500000,
       // nonce: await window.web3.eth.getTransactionCount(addr),

@@ -1,6 +1,6 @@
 import './Comptroller.sol';
 import './PriceOracle.sol';
-import './CErc20.sol';
+import './MErc20.sol';
 
 pragma solidity ^0.5.8;
 
@@ -25,9 +25,9 @@ contract PriceOracleProxy is PriceOracle {
     Comptroller public comptroller;
 
     /**
-     * @notice address of the cEther contract, which has a constant price
+     * @notice address of the mEther contract, which has a constant price
      */
-    address public cEtherAddress;
+    address public mEtherAddress;
 
     /**
      * @notice Indicator that this is a PriceOracle contract (for inspection)
@@ -39,13 +39,13 @@ contract PriceOracleProxy is PriceOracle {
      * be consulted for market listing status.
      * @param v1PriceOracle_ The address of the v1 price oracle, which will
      * continue to operate and hold prices for collateral assets.
-     * @param cEtherAddress_ The address of the cEther contract, which will
+     * @param mEtherAddress_ The address of the mEther contract, which will
      * return a constant 1e18, since all prices relative to ether
      */
-    constructor(address comptroller_, address v1PriceOracle_, address cEtherAddress_) public {
+    constructor(address comptroller_, address v1PriceOracle_, address mEtherAddress_) public {
         comptroller = Comptroller(comptroller_);
         v1PriceOracle = V1PriceOracleInterface(v1PriceOracle_);
-        cEtherAddress = cEtherAddress_;
+        mEtherAddress = mEtherAddress_;
     }
 
     /**
@@ -53,19 +53,19 @@ contract PriceOracleProxy is PriceOracle {
      * @return The underlying asset price mantissa (scaled by 1e18).
      *  Zero means the price is unavailable.
      */
-    function getUnderlyingPrice(CToken cToken) public view returns (uint) {
+    function getUnderlyingPrice(MToken cToken) public view returns (uint) {
         address cTokenAddress = address(cToken);
         (bool isListed, ) = comptroller.markets(cTokenAddress);
 
         if (!isListed) {
             // not listed, worthless
             return 0;
-        } else if (cTokenAddress == cEtherAddress) {
+        } else if (cTokenAddress == mEtherAddress) {
             // ether always worth 1
             return 1e18;
         } else {
             // read from v1 oracle
-            address underlying = CErc20(cTokenAddress).underlying();
+            address underlying = MErc20(cTokenAddress).underlying();
             return v1PriceOracle.assetPrices(underlying);
         }
     }

@@ -11,8 +11,8 @@ const axios         = require('axios');
 const ExampleCoin = artifacts.require('./lever/ExampleDaiCoin.sol');
 const Med = artifacts.require('./lever/MedianizerExample.sol');
 
-const CErc20 = artifacts.require('./lever/CErc20.sol');
-const CEther = artifacts.require('./lever/CEther.sol');
+const MErc20 = artifacts.require('./lever/MErc20.sol');
+const MEther = artifacts.require('./lever/MEther.sol');
 const Comptroller = artifacts.require('./lever/Comptroller.sol')
 const PriceOracleProxy = artifacts.require('./lever/PriceOracleProxy.sol')
 const PriceOracle = artifacts.require('./lever/_PriceOracle.sol')
@@ -40,11 +40,11 @@ async function getContracts(stablecoin, accounts) {
   if (stablecoin == 'DAI') {
     const token = await ExampleCoin.deployed();
     const med   = await Med.deployed();
-    const cErc20 = await CErc20.deployed();
-    const cEther = await CEther.deployed();
+    const cErc20 = await MErc20.deployed();
+    const mEther = await MEther.deployed();
     const comptroller = await Comptroller.deployed();
 
-    return { token, med, cErc20, cEther, comptroller }
+    return { token, med, cErc20, mEther, comptroller }
   }
 }
 
@@ -95,12 +95,12 @@ stablecoins.forEach((stablecoin) => {
 
       btcPrice = '9340.23'
 
-      const { token, med, cErc20, cEther, comptroller } = await getContracts(name, accounts)
+      const { token, med, cErc20, mEther, comptroller } = await getContracts(name, accounts)
 
       this.token = token
       this.med = med
       this.cErc20 = cErc20
-      this.cEther = cEther
+      this.mEther = mEther
       this.comptroller = comptroller
     })
 
@@ -112,7 +112,7 @@ stablecoins.forEach((stablecoin) => {
         const lenderTokenBalanceBefore = await this.token.balanceOf.call(addresses[0])
         console.log('lenderTokenBalanceBefore: ', lenderTokenBalanceBefore.toString())
         await web3.eth.sendTransaction({ to: addresses[0], from: lender, value: toWei('1', 'ether')})
-        await this.cEther.mint({ from: addresses[0], value: toWei('1', 'ether')})
+        await this.mEther.mint({ from: addresses[0], value: toWei('1', 'ether')})
         const cErc20BalAfterDeposit2 = await this.cErc20.balanceOf.call(addresses[0])
         console.log('cErc20BalAfterDeposit2: ', cErc20BalAfterDeposit2.toString())
       })
@@ -121,7 +121,7 @@ stablecoins.forEach((stablecoin) => {
     describe('withdraw', function() {
       it('should update cBalance based on compound exchange rate of cTokens', async function() {
         await web3.eth.sendTransaction({ to: addresses[0], from: lender, value: toWei('1', 'ether')})
-        await this.cEther.mint({ from: addresses[0], value: toWei('1', 'ether')})
+        await this.mEther.mint({ from: addresses[0], value: toWei('1', 'ether')})
       })
     })
   })

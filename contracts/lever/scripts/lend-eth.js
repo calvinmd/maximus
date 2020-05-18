@@ -1,5 +1,5 @@
-const CEther = artifacts.require('CEther')
-const CErc20 = artifacts.require('CErc20')
+const MEther = artifacts.require('MEther')
+const MErc20 = artifacts.require('MErc20')
 const DAI = artifacts.require('DAI')
 const Comptroller = artifacts.require('Comptroller')
 const BN = require('bn.js')
@@ -18,26 +18,26 @@ module.exports = async () => {
         const lender2 = accounts[1]
         const borrower = accounts[2]
 
-        // const cEther = await CEther.at(DeploymentInfo.Contracts.cETH)
-        const cEther = await CEther.deployed()
+        // const mEther = await MEther.at(DeploymentInfo.Contracts.mETH)
+        const mEther = await MEther.deployed()
         // const dai = await FaucetToken.at(DeploymentInfo.Contracts.DAI)
         const dai = await DAI.deployed()
-        // const cDAI = await CErc20.at(DeploymentInfo.Contracts.cDAI)
-        const cDAI = await CErc20.deployed()
+        // const cDAI = await MErc20.at(DeploymentInfo.Contracts.cDAI)
+        const cDAI = await MErc20.deployed()
         const comptroller = await Comptroller.at(await cDAI.comptroller())
 
 
         // Enter Markets (Executed once per deployment)
-        await comptroller.enterMarkets([cDAI.address, cEther.address], {from: borrower})
-        // await comptroller.enterMarkets([DeploymentInfo.Contracts.cDAI, DeploymentInfo.Contracts.cETH], {from: borrower})
+        await comptroller.enterMarkets([cDAI.address, mEther.address], {from: borrower})
+        // await comptroller.enterMarkets([DeploymentInfo.Contracts.cDAI, DeploymentInfo.Contracts.mETH], {from: borrower})
 
         // Lender Lend ETH
         console.log('ETH Lend Workflow')
         console.log(`ETH balance before minting: ${web3.utils.fromWei(await web3.eth.getBalance(lender))}`)
-        await cEther.mint({value: threeEthInWei})
+        await mEther.mint({value: threeEthInWei})
         console.log(`ETH balance after minting: ${web3.utils.fromWei(await web3.eth.getBalance(lender))}`)
-        const underlyingBalanceEth = await cEther.balanceOfUnderlying.call(lender)
-        await cEther.redeemUnderlying(underlyingBalanceEth)
+        const underlyingBalanceEth = await mEther.balanceOfUnderlying.call(lender)
+        await mEther.redeemUnderlying(underlyingBalanceEth)
         console.log(`ETH balance after redeeming underlying asset: ${web3.utils.fromWei(await web3.eth.getBalance(lender))}\n`)
 
         process.exit(0)

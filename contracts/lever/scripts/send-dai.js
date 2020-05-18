@@ -1,5 +1,5 @@
-const CEther = artifacts.require('CEther')
-const CErc20 = artifacts.require('CErc20')
+const MEther = artifacts.require('MEther')
+const MErc20 = artifacts.require('MErc20')
 const DAI = artifacts.require('DAI')
 const Comptroller = artifacts.require('Comptroller')
 const BN = require('bn.js')

@@ -107,9 +107,9 @@ contract WhitePaperInterestRateModel is InterestRateModel, Exponential {
       *         and total reserves.
       * @dev The return value should be scaled by 1e18, thus a return value of
       *      `(true, 1000000000000)` implies an interest rate of 0.000001 or 0.0001% *per block*.
-      * @param cash The total cash of the underlying asset in the CToken
-      * @param borrows The total borrows of the underlying asset in the CToken
-      * @param _reserves The total reserves of the underlying asset in the CToken
+      * @param cash The total cash of the underlying asset in the MToken
+      * @param borrows The total borrows of the underlying asset in the MToken
+      * @param _reserves The total reserves of the underlying asset in the MToken
       * @return Success or failure and the borrow interest rate per block scaled by 10e18
       */
     function getBorrowRate(uint cash, uint borrows, uint _reserves) public view returns (uint, uint) {
