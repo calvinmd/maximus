@@ -1,6 +1,6 @@
 import { get } from 'lodash'
 
-import ERC20JSON from '../contracts/ERC20.json'
+// import ERC20JSON from '../contracts/ERC20.json'
 import cErc20JSON from '../contracts/CErc20.json'
 import comptrollerJSON from '../contracts/Comptroller.json'
 
@@ -45,10 +45,10 @@ const mUSDM = new window.web3.eth.contract(cErc20JSON.abi).at(getAddresses(windo
 export async function enterMarketUSDM(address, options = {}) {
   const addr = address || window.ethereum.selectedAddress
   if (!addr) throw new Error('Ethereum Address required.')
-  return comptroller.enterMarkets([mUSDM]).send({
+  return comptroller.enterMarkets([mUSDM.address], {
     from: addr,
     gas: 2500000,
-    nonce: await window.web3.eth.getTransactionCount(address),
+    nonce: await window.web3.eth.getTransactionCount(addr),
     ...options,
   })
 }
@@ -63,11 +63,11 @@ export async function enterMarketUSDM(address, options = {}) {
 export async function lendETH(amount, address, options = {}) {
   const addr = address || window.ethereum.selectedAddress
   if (!addr) throw new Error('Ethereum Address required.')
-  return cETH.mint().send({
+  return cETH.mint({
     from: addr,
     amount,
     gas: 2500000,
-    nonce: await window.web3.eth.getTransactionCount(address),
+    nonce: await window.web3.eth.getTransactionCount(addr),
     ...options,
   })
 }
@@ -82,10 +82,10 @@ export async function lendETH(amount, address, options = {}) {
 export async function lendUSDM(amount, address, options = {}) {
   const addr = address || window.ethereum.selectedAddress
   if (!addr) throw new Error('Ethereum Address required.')
-  return mUSDM.mint(amount).send({
+  return mUSDM.mint(amount, {
     from: addr,
     gas: 2500000,
-    nonce: await window.web3.eth.getTransactionCount(address),
+    nonce: await window.web3.eth.getTransactionCount(addr),
     ...options,
   })
 }
@@ -99,10 +99,10 @@ export async function lendUSDM(amount, address, options = {}) {
 export async function borrowUSDM(amount, address, options = {}) {
   const addr = address || window.ethereum.selectedAddress
   if (!addr) throw new Error('Ethereum Address required.')
-  return mUSDM.borrow(amount).send({
+  return mUSDM.borrow(amount, {
     from: addr,
     gas: 2500000,
-    nonce: await window.web3.eth.getTransactionCount(address),
+    nonce: await window.web3.eth.getTransactionCount(addr),
     ...options,
   })
 }
