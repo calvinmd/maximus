@@ -1,13 +1,14 @@
 import React from 'react';
 
 const Button = ({
+  type = "button",
   handleClick,
   disabled = false,
   label,
   ...rest
 }) => {
   return (
-    <button type="button" onClick={handleClick} disabled={disabled} {...rest}>
+    <button type={type} onClick={handleClick} disabled={disabled} {...rest}>
       {label}
     </button>
   );
