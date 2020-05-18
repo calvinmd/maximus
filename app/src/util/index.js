@@ -1,22 +1,29 @@
 import { get } from 'lodash'
 
+import ERC20JSON from '../contracts/ERC20.json'
+import cErc20JSON from '../contracts/CErc20.json'
+import comptrollerJSON from '../contracts/Comptroller.json'
+
 
 const addresses = {
   '1': {},
   '42': {},
   'local': {
-    "DaiInterestRateModel": "0x9561C133DD8580860B6b7E504bC5Aa500f0f06a7",
-    "USDMInterestRateModel": "0xe982E462b094850F12AF94d21D470e21bE9D0E9C",
-    "PriceOracle": "0xFC628dd79137395F3C9744e33b1c5DE554D94882",
-    "PriceOracleProxy": "0x5f8e26fAcC23FA4cbd87b8d9Dbbd33D5047abDE1",
-    "DAI": "0xCfEB869F69431e42cdB54A4F4f105C19C080A601",
-    "USDM": "0x254dffcd3277C0b1660F6d42EFbB754edaBAbC2B",
-    "mUSDM": "0xDb56f2e9369E0D7bD191099125a3f6C370F8ed15",
-    "_MakerMedianizer": "0xC89Ce4735882C9F0f0FE26686c53074E09B0D550",
-    "TFCompoundDAI": "0x2D8BE6BF0baA74e0A907016679CaE9190e80dD0A",
-    "TFCompoundUSDM": "0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF",
-    "Comptroller": "0x9b1f7F645351AF3631a656421eD2e40f2802E6c0",
-    "Unitroller": "0x0290FB167208Af455bB137780163b7B7a9a10C16"
+    "DaiInterestRateModel": "0x6639e685f046f7C445e59dc8891AD3CD15811FC6",
+    "USDMInterestRateModel": "0x13E2D4037F800d50cdF9f827d3fB1F6711d279B0",
+    "ETHInterestRateModel": "0x606d5871a12b997b53EEF3f99d542ecc26331538",
+    "PriceOracle": "0x763986F184f1c2daa7e10576549EdFD231d8B47A",
+    "PriceOracleProxy": "0xe94aA5dBCDdDC9C0058e5281197990Da3aFE7fd8",
+    "DAI": "0xF0b863d178e711648fE362ADD304a5952A421566",
+    "USDM": "0x5B817cc3eE101e1Aa24e53F3374144e3597637e2",
+    "cDAI": "0x9B931C73ac1425297Db72c9bf59729aD57F1d080",
+    "cETH": "0x3Ae9cEFaCa54D19eD6512b58A8Fb0263babD9E9A",
+    "mUSDM": "0x96290FE92dF3DFBdB2eB24F692311e1E47327025",
+    "_MakerMedianizer": "0xE35BD28E9B4a6b179FFA76B800b431513ED1bC1a",
+    "TFCompoundDAI": "0x05AF4085F8529CBBA0026de1A00302B93c6eaEC8",
+    "TFCompoundUSDM": "0x33A10231fB97405Ce95fc9D0BD286C2a86fFA1F0",
+    "Comptroller": "0x8ea67e9B41e674D16562eFAedAc11265aF04f339",
+    "Unitroller": "0xC079086aaC979D7E2CFE3077A2E706239bE62704",
   },
 }
 
@@ -24,13 +31,9 @@ function getAddresses(networkId) {
   return get(addresses, networkId, addresses.local)
 }
 
-const ERC20JSON = require('../contracts/ERC20.json')
-const cErc20JSON = require('../contracts/CErc20.json')
-const comptrollerJSON = require('../contracts/Comptroller.json')
-
-const comptroller = new web3.eth.contract(comptrollerJSON.abi).at(addresses.Comptroller)
-const mUSDM = new web3.eth.contract(cErc20JSON.abi).at(addresses.mUSDM)
-const USDM = new web3.eth.contract(ERC20JSON.abi).at(addresses.USDM)
+const comptroller = new window.web3.eth.contract(comptrollerJSON.abi).at(getAddresses(window.ethereum.networkId).Comptroller)
+const mUSDM = new window.web3.eth.contract(cErc20JSON.abi).at(getAddresses(window.ethereum.networkId).mUSDM)
+// const USDM = new window.web3.eth.contract(ERC20JSON.abi).at(getAddresses(window.ethereum.networkId).USDM)
 
 
 /*
@@ -38,13 +41,13 @@ const USDM = new web3.eth.contract(ERC20JSON.abi).at(addresses.USDM)
  * @param address? - sender ethereum address
  * @param options? - gas, gasPrice, etc
 **/
-export async enterMarketUSDM(address, options = {}) {
-  const addr = get(address, web3.ethereum.selectedAddress)
+export async function enterMarketUSDM(address, options = {}) {
+  const addr = address || window.ethereum.selectedAddress
   if (!addr) throw new Error('Ethereum Address required.')
-  return comptroller.methods.enterMarkets(['USDM']).send({
+  return comptroller.enterMarkets([mUSDM]).send({
     from: addr,
     gas: 2500000,
-    nonce: await web3.eth.getTransactionCount(address),
+    nonce: await window.web3.eth.getTransactionCount(address),
     ...options,
   })
 }
@@ -56,13 +59,13 @@ export async enterMarketUSDM(address, options = {}) {
  * @param address? - lender ethereum address
  * @param options? - gas, gasPrice, etc
 **/
-export async lendUSDM(amount, address, options = {}) {
-  const addr = get(address, web3.ethereum.selectedAddress)
+export async function lendUSDM(amount, address, options = {}) {
+  const addr = address || window.ethereum.selectedAddress
   if (!addr) throw new Error('Ethereum Address required.')
-  return mUSDM.methods.mint(amount).send({
+  return mUSDM.mint(amount).send({
     from: addr,
     gas: 2500000,
-    nonce: await web3.eth.getTransactionCount(address),
+    nonce: await window.web3.eth.getTransactionCount(address),
     ...options,
   })
 }
@@ -73,13 +76,13 @@ export async lendUSDM(amount, address, options = {}) {
  * @param address? - borrower ethereum address
  * @param options? - gas, gasPrice, etc
 **/
-export async borrowUSDM(amount, address, options = {}) {
-  const addr = get(address, web3.ethereum.selectedAddress)
+export async function borrowUSDM(amount, address, options = {}) {
+  const addr = address || window.ethereum.selectedAddress
   if (!addr) throw new Error('Ethereum Address required.')
-  return mUSDM.methods.borrow(amount).send({
+  return mUSDM.borrow(amount).send({
     from: addr,
     gas: 2500000,
-    nonce: await this.web3.eth.getTransactionCount(address),
+    nonce: await window.web3.eth.getTransactionCount(address),
     ...options,
   })
 }
