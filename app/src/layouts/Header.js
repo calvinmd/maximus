@@ -24,8 +24,11 @@ const Header = () => (
         <Link to="/liquidity" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
           Liquidity
         </Link>
-        <Link to="/governance" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+        <Link to="/governance" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
           Governance
+        </Link>
+        <Link to="/playground" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+          Playground
         </Link>
       </div>
       <div>
