@@ -32,6 +32,7 @@ function getAddresses(networkId) {
 }
 
 const comptroller = new window.web3.eth.contract(comptrollerJSON.abi).at(getAddresses(window.ethereum.networkId).Comptroller)
+const cETH = new window.web3.eth.contract(cErc20JSON.abi).at(getAddresses(window.ethereum.networkId).cETH)
 const mUSDM = new window.web3.eth.contract(cErc20JSON.abi).at(getAddresses(window.ethereum.networkId).mUSDM)
 // const USDM = new window.web3.eth.contract(ERC20JSON.abi).at(getAddresses(window.ethereum.networkId).USDM)
 
@@ -54,7 +55,26 @@ export async function enterMarketUSDM(address, options = {}) {
 
 
 /*
- * 2. Lend (USDM)
+ * 2. Lend (ETH)
+ * @param amount* - amount ETH
+ * @param address? - lender ethereum address
+ * @param options? - gas, gasPrice, etc
+**/
+export async function lendETH(amount, address, options = {}) {
+  const addr = address || window.ethereum.selectedAddress
+  if (!addr) throw new Error('Ethereum Address required.')
+  return cETH.mint().send({
+    from: addr,
+    amount,
+    gas: 2500000,
+    nonce: await window.web3.eth.getTransactionCount(address),
+    ...options,
+  })
+}
+
+
+/*
+ * 3. Lend (USDM)
  * @param amount* - amount USDM
  * @param address? - lender ethereum address
  * @param options? - gas, gasPrice, etc
@@ -71,7 +91,7 @@ export async function lendUSDM(amount, address, options = {}) {
 }
 
 /*
- * 3. Borrow (USDM)
+ * 4. Borrow (USDM)
  * @param amount* - amount USDM
  * @param address? - borrower ethereum address
  * @param options? - gas, gasPrice, etc
