@@ -163,7 +163,7 @@ const Liquidity = () => {
             <input type="text" className="text-5xl" placeholder="0" value={supplyAmount} onChange={handleChangeSupplyAmount} />
             <Button label="MAX" onClick={supplyAction === 'supply' ? handleClickSupplyMax : handleClickWithdrawMax} className="border border-teal-500 rounded p-1 text-sm text-teal-500 hover:text-teal-700"/>
           </div>
-          <Button label="Execute" disabled={isSubmitDisabled()} type="submit" className="inline-block text-sm px-4 py-2 border-teal-500 bg-teal-500 leading-none border rounded text-white hover:bg-teal-600 mt-4 lg:mt-0" />
+          <Button label="Execute" disabled={isSubmitDisabled()} type="submit" className="inline-block text-xs px-4 py-2 border-teal-500 bg-teal-500 leading-none border rounded text-white hover:bg-teal-600 mt-4 lg:mt-0" />
         </form>
       </div>
     </div>
