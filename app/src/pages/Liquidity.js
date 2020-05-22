@@ -131,13 +131,13 @@ const Liquidity = () => {
     <div className="flex flex-col">
       <h1 className="text-2xl font-italic">Money Market</h1>
       <div className="flex flex-col sm:flex-row sm:justify-around">
-        <div className="rounded-lg border border-black p-8">
+        <div className="rounded-lg border-2 border-black p-8">
           <h2 className="text-2xl border-b-8 border-mred mb-2">Borrow</h2>
           <Statistic label="APY" value={`4%`} />
           <Statistic label="Total Borrowed" value={`$1,232,633`} />
           <Statistic label="24h Volume" value={`$52,342`} />
         </div>
-        <div className="rounded-lg border border-black p-8">
+        <div className="rounded-lg border-2 border-black p-8">
           <h2 className="text-2xl border-b-8 border-mred mb-2">Supply</h2>
           <Statistic label="APY" value={`4%`} />
           <Statistic label="Total Supplied" value={`$1,232,633`} />
