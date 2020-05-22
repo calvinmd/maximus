@@ -20,7 +20,7 @@ const getCollateralizationRatioCopy = (eth, ethPrice, usdm) => {
   }
 
   const percentage = getCollateralizationRatio(eth, ethPrice, usdm);
-  return `${percentage}%`;
+  return `${percentage.toFixed(4)}%`;
 };
 
 const getStatus = (eth, ethPrice, usdm) => {
@@ -29,7 +29,6 @@ const getStatus = (eth, ethPrice, usdm) => {
   }
 
   const ratio = getCollateralizationRatio(eth, ethPrice, usdm);
-  console.log(ratio);
   if (ratio < MINIMUM_RATIO) {
     return 'invalid';
   }
