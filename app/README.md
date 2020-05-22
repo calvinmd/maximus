@@ -3,6 +3,7 @@
 ## Getting started
 1. Install npm packages `npm i`
 2. Start server `npm run start`
+3. If needed, build Tailwind CSS file with `npx tailwindcss build styles.css -o index.css `
 
 ---
 

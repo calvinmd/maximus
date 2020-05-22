@@ -41,7 +41,8 @@ const getETHPriceCopy = (ethPrice) => `$${(ethPrice / 100).toFixed(2)}`;
 
 const MINIMUM_RATIO = 150; // percentage
 
-const Borrow = () => {
+const Manage = () => {
+  const [cdps, setCDPs] = useState([]);
   const ethPrice = 15000; // in cents
   const [eth, setETH] = useState(''); // in whole units
   const [usdm, setUSDM] = useState(''); // in whole units
@@ -83,4 +84,4 @@ const Borrow = () => {
   );
 };
 
-export { Borrow };
+export { Manage };

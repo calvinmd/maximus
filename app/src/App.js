@@ -9,10 +9,11 @@ import { Home as HomePage } from './pages/Home';
 import { Borrow as BorrowPage } from './pages/Borrow';
 import { Liquidity as LiquidityPage } from './pages/Liquidity';
 import { Governance as GovernancePage } from './pages/Governance';
+import { Manage as ManagePage } from './pages/Manage';
 import { Playground as PlaygroundPage } from './pages/Playground';
 
 
-console.log(window.ethereum, window.ethereum.selectedAddress, window.web3) /* exlint-disable-line */
+console.log(window.ethereum, window.ethereum.selectedAddress, window.web3) /* eslint-disable-line */
 const drizzle = new Drizzle(drizzleOptions);
 
 const App = () => (
@@ -23,6 +24,7 @@ const App = () => (
         <Route exact path='/borrow' component={BorrowPage} />
         <Route exact path='/liquidity' component={LiquidityPage} />
         <Route exact path='/governance' component={GovernancePage} />
+        <Route exact path='/manage' component={ManagePage} />
         <Route exact path='/playground' component={PlaygroundPage} />
       </Layout>
     </Switch>
