@@ -20,7 +20,10 @@ const Playground = () => {
           return (
             <Row key={key}>
               <label>{method.description || key}</label>
-              <button style={style} onClick={() => method(...method.exampleParams)}>{key}</button>
+              <button style={style} onClick={() => {
+                console.log(method.exampleParams)
+                method(...method.exampleParams)
+              }}>{key}</button>
             </Row>
           )
         })}

@@ -48,12 +48,16 @@ console.log('mUSDM ', mUSDM)
 export async function enterMarkets(address, options = {}) {
   const addr = address || window.ethereum.selectedAddress
   if (!addr) throw new Error('Ethereum Address required.')
+  console.log(addr, window.ethereum.selectedAddress)
+  console.log(mUSDM.address, mETH.address)
   try {
-    return comptroller.enterMarkets([mUSDM.address, mETH.address], {
+    return comptroller.enterMarkets([mUSDM.address], {
       from: addr,
       gas: 2500000,
       // nonce: await window.web3.eth.getTransactionCount(addr),
       ...options,
+    }, () => {
+      console.log('Done.')
     })
   } catch (e) {
     console.error(e)
@@ -78,6 +82,8 @@ export async function lendETH(amount, address, options = {}) {
       gas: 2500000,
       // nonce: await window.web3.eth.getTransactionCount(addr),
       ...options,
+    }, () => {
+      console.log('Done.')
     })
   } catch (e) {
     console.error(e)
@@ -102,6 +108,8 @@ export async function lendUSDM(amount, address, options = {}) {
       gas: 2500000,
       // nonce: await window.web3.eth.getTransactionCount(addr),
       ...options,
+    }, () => {
+      console.log('Done.')
     })
   } catch (e) {
     console.error(e)
@@ -125,6 +133,8 @@ export async function borrowUSDM(amount, address, options = {}) {
       gas: 2500000,
       // nonce: await window.web3.eth.getTransactionCount(addr),
       ...options,
+    }, () => {
+      console.log('Done.')
     })
   } catch (e) {
     console.error(e)
@@ -178,6 +188,8 @@ export async function repayBorrowUSDM(amount, options = {}) {
       gas: 2500000,
       // nonce: await window.web3.eth.getTransactionCount(addr),
       ...options,
+    }, () => {
+      console.log('Done.')
     })
   } catch (e) {
     console.error(e)
@@ -200,6 +212,8 @@ export async function repayBorrowETH(amount, options = {}) {
       gas: 2500000,
       // nonce: await window.web3.eth.getTransactionCount(addr),
       ...options,
+    }, () => {
+      console.log('Done.')
     })
   } catch (e) {
     console.error(e)
@@ -220,6 +234,8 @@ export async function redeemUnderlyingUSDM(amount, options = {}) {
       gas: 2500000,
       // nonce: await window.web3.eth.getTransactionCount(addr),
       ...options,
+    }, () => {
+      console.log('Done.')
     })
   } catch (e) {
     console.error(e)
@@ -240,6 +256,8 @@ export async function redeemUnderlyingETH(amount, options = {}) {
       gas: 2500000,
       // nonce: await window.web3.eth.getTransactionCount(addr),
       ...options,
+    }, () => {
+      console.log('Done.')
     })
   } catch (e) {
     console.error(e)
