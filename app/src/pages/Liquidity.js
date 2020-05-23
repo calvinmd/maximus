@@ -25,17 +25,16 @@ const Liquidity = () => {
   // const [repayInputAmount, setRepayInputAmount] = useState('');
   const [supplyInputAmount, setSupplyInputAmount] = useState('');
   // const [withdrawInputAmount, setWithdrawInputAmount] = useState('');
+  const [ethInputAmount, setETHInputAmount] = useState('');
 
   const [walletUSDMBalance, setWalletUSDMBalance] = useState(0); // amount of USD in wallet
+  const [walletETHBalance, setWalletETHBalance] = useState(0); // amount of ETH in wallet
   const [borrowBalance, setBorrowBalance] = useState(0); // amount borrowing from market
   const [borrowLimit, setBorrowLimit] = useState(0); // value of collateralized assets
   const [supplyBalance, setSupplyBalance] = useState(0); // amount supplying to market
+  const [ethBalance, setETHBalance] = useState(0); // amount of eth collateralized
   const handleClickAction = (action) => {
     setAction(action);
-  };
-
-  const handleChangeBorrowAmount = (event) => {
-    setBorrowInputAmount(event.target.value);
   };
 
   const handleClickMax = () => {
@@ -47,11 +46,23 @@ const Liquidity = () => {
       setSupplyInputAmount(String(walletUSDMBalance));
     } else if (action === "withdraw") {
        setSupplyInputAmount(String(supplyBalance));
+    } else if (action === "collateralize_eth") {
+      setETHInputAmount(walletETHBalance);
+    } else if (action === "withdraw_eth") {
+      setETHInputAmount(ethBalance);
     }
+  };
+
+  const handleChangeBorrowAmount = (event) => {
+    setBorrowInputAmount(event.target.value);
   };
 
   const handleChangeSupplyAmount = (event) => {
     setSupplyInputAmount(event.target.value);
+  };
+
+  const handleChangeETHAmount = (event) => {
+    setETHInputAmount(event.target.value);
   };
 
   const handleSubmit = (event) => {
@@ -108,6 +119,8 @@ const Liquidity = () => {
         <Button label="REPAY" onClick={() => handleClickAction("repay")} className={getTabButtonClassNames(action === 'repay')} />
         <Button label="SUPPLY" onClick={() => handleClickAction("supply")} className={getTabButtonClassNames(action === 'supply')} />
         <Button label="WITHDRAW" onClick={() => handleClickAction("withdraw")} className={getTabButtonClassNames(action === 'withdraw')} />
+        <Button label="COLLATERALIZE ETH" onClick={() => handleClickAction("collateralize_eth")} className={getTabButtonClassNames(action === 'collateralize_eth')} />
+        <Button label="WITHDRAW ETH" onClick={() => handleClickAction("withdraw_eth")} className={getTabButtonClassNames(action === 'withdraw_eth')} />
       </div>
       <div>
         {/* <div className={`space-x-2 text-center ${side === 'borrow' ? '' : 'hidden'}`}>
@@ -141,6 +154,12 @@ const Liquidity = () => {
             {/* SUPPLY */}
             <div className={`border-b-2 border-black ${isSupply ? '' : 'hidden'}`}>
               <input type="text" className="text-5xl" placeholder="0" value={supplyInputAmount} onChange={handleChangeSupplyAmount} />
+              <Button label="max" onClick={handleClickMax} className="border border-mred rounded p-1 text-sm text-mred hover:text-mred"/>
+            </div>
+
+            {/* ETH */}
+            <div className={`border-b-2 border-black ${isSupply ? '' : 'hidden'}`}>
+              <input type="text" className="text-5xl" placeholder="0" value={ethInputAmount} onChange={handleChangeETHAmount} />
               <Button label="max" onClick={handleClickMax} className="border border-mred rounded p-1 text-sm text-mred hover:text-mred"/>
             </div>
 
