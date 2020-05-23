@@ -3,22 +3,12 @@ import React, { useState } from 'react';
 import { Button } from '../components/Button';
 import { Statistic } from '../components/Statistic';
 
-const getUserIntent = (side, borrowAction, supplyAction) => {
-  if (side === 'borrow') {
-    if (borrowAction === 'borrow') {
-      return 'borrow';
-    }
-
-    return 'repay';
+const getTabButtonClassNames = (active) => {
+  if (active) {
+    return 'inline-block text-sm px-16 py-4 border-mred bg-mred leading-none border-2 text-white hover:bg-mred mt-4 lg:mt-0 font-bold';
   }
 
-  if (side === 'supply') {
-    if (supplyAction === 'supply') {
-      return 'supply';
-    }
-
-    return 'withdraw';
-  }
+  return 'inline-block text-sm px-16 py-4 border-mred leading-none border-2 text-mred hover:text-white hover:bg-mred mt-4 lg:mt-0 font-bold';
 };
 
 const getClassNames = (active) => {
@@ -26,77 +16,42 @@ const getClassNames = (active) => {
     return 'inline-block text-sm px-16 py-4 border-mred bg-mred leading-none border rounded text-white hover:bg-mred mt-4 lg:mt-0';
   }
 
-  return 'inline-block text-sm px-16 py-4 border-mred leading-none border rounded text-mred hover:text-white hover:bg-mred mt-4 lg:mt-0';
+  return 'inline-block text-sm px-16 py-4 border-mred leading-none border text-mred rounded hover:text-white hover:bg-mred mt-4 lg:mt-0';
 };
 
 const Liquidity = () => {
-  const [side, setSide] = useState('borrow');
-  const [borrowAction, setBorrowAction] = useState('borrow'); // 'borrow', 'repay'
-  const [supplyAction, setSupplyAction] = useState('supply'); // 'supply', 'withdraw'
-  const [borrowInputAmount, setBorrowInputAmount] = useState('');
-  const [repayInputAmount, setRepayInputAmount] = useState('');
+  const [action, setAction] = useState('borrow'); // values are 'borrow', 'repay', 'supply', 'withdraw'
+  const [borrowInputAmount, setBorrowInputAmount] = useState(''); //
+  // const [repayInputAmount, setRepayInputAmount] = useState('');
   const [supplyInputAmount, setSupplyInputAmount] = useState('');
-  const [withdrawInputAmount, setWithdrawInputAmount] = useState('');
+  // const [withdrawInputAmount, setWithdrawInputAmount] = useState('');
 
-  const [borrowBalance, setBorrowBalance] = useState(0); // amount in borrow contracts
-  const [supplyBalance, setSupplyBalance] = useState(0); // amount in supply contracts
-
-  const handleClickSide = () => {
-    if (side === 'borrow') {
-      setSide('supply');
-    }
-
-    if (side === 'supply') {
-      setSide('borrow');
-    }
-  };
-
-  const handleClickBorrowAction = () => {
-    if (borrowAction === 'borrow') {
-      setBorrowAction('repay');
-    }
-
-    if (borrowAction === 'repay') {
-      setBorrowAction('borrow');
-    }
-  };
-
-  const handleClickSupplyAction = () => {
-    if (supplyAction === 'supply') {
-      setSupplyAction('withdraw');
-    }
-
-    if (supplyAction === 'withdraw') {
-      setSupplyAction('supply');
-    }
+  const [walletUSDMBalance, setWalletUSDMBalance] = useState(0); // amount of USD in wallet
+  const [borrowBalance, setBorrowBalance] = useState(0); // amount borrowing from market
+  const [borrowLimit, setBorrowLimit] = useState(0); // value of collateralized assets
+  const [supplyBalance, setSupplyBalance] = useState(0); // amount supplying to market
+  const handleClickAction = (action) => {
+    setAction(action);
   };
 
   const handleChangeBorrowAmount = (event) => {
     setBorrowInputAmount(event.target.value);
   };
 
-  const handleClickBorrowMax = () => {
-    // TODO: get max collateralization value
-    setBorrowInputAmount();
-  };
-
-  const handleClickRepayMax = () => {
-    // TODO: get amount borrowed in contract
-    setRepayInputAmount();
+  const handleClickMax = () => {
+    if (action === "borrow") {
+      setBorrowInputAmount(String(borrowLimit));
+    } else if (action === "repay") {
+      setBorrowInputAmount(String(borrowBalance));
+    } else if (action === "supply") {
+      setSupplyInputAmount(String(walletUSDMBalance));
+    } else if (action === "withdraw") {
+       setSupplyInputAmount(String(supplyBalance));
+    }
   };
 
   const handleChangeSupplyAmount = (event) => {
     setSupplyInputAmount(event.target.value);
-  };
-
-  const handleClickSupplyMax = () => {
-    // TODO: get max funds available in wallet
-    setSupplyInputAmount();
-  };
-
-  const handleClickWithdrawMax = () => {
-    // TODO: get amount supplied in contract
-    setWithdrawInputAmount();
   };
 
   const handleSubmit = (event) => {
@@ -106,68 +61,92 @@ const Liquidity = () => {
   };
 
   const isSubmitDisabled = () => {
-    const intent = getUserIntent(side, borrowAction, supplyAction);
-    if (intent === 'borrow') {
-      // TODO: borrowInputAmount > 0 and <= max collateralization value
+    if (action === 'borrow') {
+      const amount = Number(borrowInputAmount);
+      return borrowLimit === 0 || amount > borrowLimit;
     }
 
-    if (intent === 'repay') {
-      // TODO: repayInputAmount > 0 and <= max borrowed outstanding
+    if (action === 'repay') {
+      const amount = Number(borrowInputAmount);
+      return borrowBalance === 0 || amount > borrowBalance;
     }
 
-    if (intent === 'supply') {
-      // TODO: supplyInputAmount > 0 and <= max funds in wallet
+    if (action === 'supply') {
+      const amount = Number(supplyInputAmount);
+      return walletUSDMBalance === 0 || amount > walletUSDMBalance;
     }
 
-    if (intent === 'withdraw') {
-      // TODO: withdrawInputAmount > 0 and <= max supplied outstanding
+    if (action === 'withdraw') {
+      const amount = Number(supplyInputAmount);
+      return supplyBalance === 0 || amount > supplyBalance;
     }
 
     return false;
   };
 
-  const intent = getUserIntent(side, borrowAction, supplyAction);
+  const isBorrow = ['borrow', 'repay'].includes(action);
+  const isSupply = ['supply', 'withdraw'].includes(action);
   return (
     <div className="flex flex-col">
       <h1 className="text-2xl font-italic">Money Market</h1>
-      <div className="flex flex-col sm:flex-row sm:justify-around">
+      <div className="flex flex-col sm:flex-row justify-center space-x-4">
         <div className="rounded-lg border-2 border-black p-8">
           <h2 className="text-2xl border-b-8 border-mred mb-2">Borrow</h2>
           <Statistic label="APY" value={`4%`} />
-          <Statistic label="Total Borrowed" value={`$1,232,633`} />
-          <Statistic label="24h Volume" value={`$52,342`} />
+          <Statistic label="Total Borrowed" value={`1,232,633 USDM`} />
+          <Statistic label="24h Volume" value={`52,342 USDM`} />
         </div>
         <div className="rounded-lg border-2 border-black p-8">
           <h2 className="text-2xl border-b-8 border-mred mb-2">Supply</h2>
           <Statistic label="APY" value={`4%`} />
-          <Statistic label="Total Supplied" value={`$1,232,633`} />
-          <Statistic label="24h Volume" value={`$52,342`} />
+          <Statistic label="Total Supplied" value={`1,232,633 USDM`} />
+          <Statistic label="24h Volume" value={`52,342 USDM`} />
         </div>
       </div>
-      <div className="text-center my-8 space-x-8">
-        <Button label="BORROW" onClick={handleClickSide} className={getClassNames(side === 'borrow')} />
-        <Button label="SUPPLY" onClick={handleClickSide} className={getClassNames(side === 'supply')} />
+      <div className="text-center my-8 text-center">
+        <Button label="BORROW" onClick={() => handleClickAction("borrow")} className={getTabButtonClassNames(action === 'borrow')} />
+        <Button label="REPAY" onClick={() => handleClickAction("repay")} className={getTabButtonClassNames(action === 'repay')} />
+        <Button label="SUPPLY" onClick={() => handleClickAction("supply")} className={getTabButtonClassNames(action === 'supply')} />
+        <Button label="WITHDRAW" onClick={() => handleClickAction("withdraw")} className={getTabButtonClassNames(action === 'withdraw')} />
       </div>
       <div>
-        <div className={`space-x-2 ${side === 'borrow' ? '' : 'hidden'}`}>
+        {/* <div className={`space-x-2 text-center ${side === 'borrow' ? '' : 'hidden'}`}>
           <Button label="Borrow" onClick={handleClickBorrowAction} className={getClassNames(borrowAction === 'borrow')} />
           <Button label="Repay" onClick={handleClickBorrowAction} className={getClassNames(borrowAction === 'repay')} />
         </div>
-        <div className={`space-x-2 ${side === 'supply' ? '' : 'hidden'}`}>
+        <div className={`space-x-2 text-center ${side === 'supply' ? '' : 'hidden'}`}>
           <Button label="Supply" onClick={handleClickSupplyAction} className={getClassNames(supplyAction === 'supply')} />
           <Button label="Withdraw" onClick={handleClickSupplyAction} className={getClassNames(supplyAction === 'withdraw')} />
+        </div> */}
+        <div className="flex flex-row justify-center space-x-12">
+          <div className="justify-center">
+            {/* BORROW */}
+            <div className={isBorrow ? '' : 'hidden'}>
+              <Statistic label="Borrow Limit" value={`${borrowLimit} USDM`} />
+              <Statistic label="Borrow Balance" value={`${borrowBalance} USDM`} />
+            </div>
+            {/* SUPPLY */}
+            <div className={isSupply ? '' : 'hidden'}>
+              <Statistic label="Wallet" value={`${walletUSDMBalance} USDM`} />
+              <Statistic label="Supply Balance" value={`${supplyBalance} USDM`} />
+            </div>
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-2">
+            {/* BORROW */}
+            <div className={`border-b-2 border-black ${isBorrow ? '' : 'hidden'}`}>
+              <input type="text" className="text-5xl" placeholder="0" value={borrowInputAmount} onChange={handleChangeBorrowAmount} />
+              <Button label="max" onClick={handleClickMax} className="border border-mred rounded p-1 text-sm text-mred hover:text-mred"/>
+            </div>
+
+            {/* SUPPLY */}
+            <div className={`border-b-2 border-black ${isSupply ? '' : 'hidden'}`}>
+              <input type="text" className="text-5xl" placeholder="0" value={supplyInputAmount} onChange={handleChangeSupplyAmount} />
+              <Button label="max" onClick={handleClickMax} className="border border-mred rounded p-1 text-sm text-mred hover:text-mred"/>
+            </div>
+
+            <Button label="Execute" disabled={isSubmitDisabled()} type="submit" className={`inline-block text-xs px-4 py-2 leading-none border rounded text-white mt-4 lg:mt-0 ${isSubmitDisabled() ? "bg-gray-400 cursor-not-allowed" : "bg-mred"}`} />
+          </form>
         </div>
-        <form onSubmit={handleSubmit}>
-          <div className={side === 'borrow' ? '' : 'hidden'}>
-            <input type="text" className="border-b-2 border-black text-5xl" placeholder="0" value={borrowInputAmount} onChange={handleChangeBorrowAmount} />
-            <Button label="max" onClick={borrowAction === 'borrow' ? handleClickBorrowMax : handleClickRepayMax} className="border border-mred rounded p-1 text-sm text-mred hover:text-mred"/>
-          </div>
-          <div className={side === 'supply' ? '' : 'hidden'}>
-            <input type="text" className="border-b-2 border-black text-5xl" placeholder="0" value={supplyInputAmount} onChange={handleChangeSupplyAmount} />
-            <Button label="max" onClick={supplyAction === 'supply' ? handleClickSupplyMax : handleClickWithdrawMax} className="border border-mred rounded p-1 text-sm text-mred hover:text-mred"/>
-          </div>
-          <Button label="Execute" disabled={isSubmitDisabled()} type="submit" className="inline-block text-xs px-4 py-2 border-mred bg-mred leading-none border rounded text-white hover:bg-mred mt-4 lg:mt-0" />
-        </form>
       </div>
     </div>
   );
