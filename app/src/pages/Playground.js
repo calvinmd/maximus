@@ -21,7 +21,6 @@ const Playground = () => {
             <Row key={key}>
               <label>{method.description || key}</label>
               <button style={style} onClick={() => {
-                console.log(method.exampleParams)
                 method(...method.exampleParams)
               }}>{key}</button>
             </Row>

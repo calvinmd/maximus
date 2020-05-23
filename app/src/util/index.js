@@ -48,8 +48,6 @@ console.log('mUSDM ', mUSDM)
 export async function enterMarkets(address, options = {}) {
   const addr = address || window.ethereum.selectedAddress
   if (!addr) throw new Error('Ethereum Address required.')
-  console.log(addr, window.ethereum.selectedAddress)
-  console.log(mUSDM.address, mETH.address)
   try {
     return comptroller.enterMarkets([mUSDM.address], {
       from: addr,
@@ -222,6 +220,7 @@ export async function repayBorrowETH(amount, options = {}) {
 repayBorrowETH.exampleParams = [1]
 repayBorrowETH.description = 'Repay borrow of ETH.'
 
+
 /*
  * redeemUnderlyingUSDM
  * @param amount* - amount underlying to redeem
@@ -244,6 +243,7 @@ export async function redeemUnderlyingUSDM(amount, options = {}) {
 redeemUnderlyingUSDM.exampleParams = [1]
 redeemUnderlyingUSDM.description = 'Redeem underlying USDM.'
 
+
 /*
  * redeemUnderlyingETH
  * @param amount* - amount underlying to redeem
@@ -265,3 +265,109 @@ export async function redeemUnderlyingETH(amount, options = {}) {
 }
 redeemUnderlyingETH.exampleParams = [1]
 redeemUnderlyingETH.description = 'Redeem underlying ETH.'
+
+
+/*
+ * totalBorrowsCurrentUSDM
+**/
+export async function totalBorrowsCurrentUSDM(options = {}) {
+  try {
+    return mUSDM.totalBorrowsCurrent({
+      from: window.ethereum.selectedAddress,
+        gas: 2500000,
+        // nonce: await window.web3.eth.getTransactionCount(addr),
+        ...options,
+      },
+      (a, b, c) => {
+      console.log('Done.', a, b, c)
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
+totalBorrowsCurrentUSDM.exampleParams = []
+totalBorrowsCurrentUSDM.description = 'Sign. Get total borrows current of USDM.'
+
+
+/*
+ * totalBorrowsUSDM
+**/
+export async function totalBorrowsUSDM(options = {}) {
+  return new Promise((resolve, reject) => {
+    try {
+      mUSDM.totalBorrows((err, res) => {
+        if (err) throw new Error(err)
+        console.log('Done.', Number(res))
+        return resolve(Number(res))
+      })
+    } catch (e) {
+      console.error(e)
+      return reject(e)
+    }
+  })
+}
+totalBorrowsUSDM.exampleParams = []
+totalBorrowsUSDM.description = 'No Sign. Get total borrows of USDM.'
+
+
+/*
+ * totalSupplyUSDM
+**/
+export async function totalSupplyUSDM(options = {}) {
+  return new Promise((resolve, reject) => {
+    try {
+      mUSDM.totalSupply((err, res) => {
+        if (err) throw new Error(err)
+        console.log('Done.', Number(res))
+        return resolve(Number(res))
+      })
+    } catch (e) {
+      console.error(e)
+      return reject(e)
+    }
+  })
+}
+totalSupplyUSDM.exampleParams = []
+totalSupplyUSDM.description = 'No Sign. Get total supply of USDM.'
+
+
+/*
+ * borrowRatePerBlockUSDM
+**/
+export async function borrowRatePerBlockUSDM(options = {}) {
+  return new Promise((resolve, reject) => {
+    try {
+      mUSDM.borrowRatePerBlock((err, res) => {
+        if (err) throw new Error(err)
+        console.log('Done.', Number(res))
+        return resolve(Number(res) / 1e18)
+      })
+    } catch (e) {
+      console.error(e)
+      return reject(e)
+    }
+  })
+}
+borrowRatePerBlockUSDM.exampleParams = []
+borrowRatePerBlockUSDM.description = 'Borrow Rate Per Block USDM.'
+
+
+/*
+ * supplyRatePerBlockUSDM
+**/
+export async function supplyRatePerBlockUSDM(options = {}) {
+  return new Promise((resolve, reject) => {
+    try {
+      mUSDM.supplyRatePerBlock((err, res) => {
+        if (err) throw new Error(err)
+        console.log('Done.', Number(res))
+        return resolve(Number(res) / 1e18)
+      })
+    } catch (e) {
+      console.error(e)
+      return reject(e)
+    }
+  })
+}
+supplyRatePerBlockUSDM.exampleParams = []
+supplyRatePerBlockUSDM.description = 'Supply Rate Per Block USDM.'

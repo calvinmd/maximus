@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  enterMarkets,
-  lendETH,
-  lendUSDM,
-  borrowUSDM,
-  repayBorrowUSDM,
-  redeemUnderlyingUSDM,
-  redeemUnderlyingETH,
-} from '../util'
+import * as util from '../util'
 
 import { Button } from '../components/Button';
 import { Statistic } from '../components/Statistic';
@@ -43,6 +35,19 @@ const Liquidity = () => {
   const [borrowLimit, setBorrowLimit] = useState(0); // value of collateralized assets
   const [supplyBalance, setSupplyBalance] = useState(0); // amount supplying to market
   const [ethBalance, setETHBalance] = useState(0); // amount of eth collateralized
+
+  const [totalBorrowsUSDM, setTotalBorrowsUSDM] = useState('...');
+  const [totalSupplyUSDM, setTotalSupplyUSDM] = useState('...');
+  const [borrowRatePerBlockUSDM, setBorrowRatePerBlockUSDM] = useState('...');
+  const [supplyRatePerBlockUSDM, setSupplyRatePerBlockUSDM] = useState('...');
+
+  React.useEffect(() => {
+    util.totalBorrowsUSDM().then(r => setTotalBorrowsUSDM(r))
+    util.totalSupplyUSDM().then(r => setTotalSupplyUSDM(r))
+    util.borrowRatePerBlockUSDM().then(r => setBorrowRatePerBlockUSDM(r))
+    util.supplyRatePerBlockUSDM().then(r => setSupplyRatePerBlockUSDM(r))
+  }, [])
+
   const handleClickAction = (action) => {
     setAction(action);
   };
@@ -113,14 +118,14 @@ const Liquidity = () => {
       <div className="flex flex-col sm:flex-row justify-center space-x-4">
         <div className="rounded-lg border-2 border-black p-8">
           <h2 className="text-2xl border-b-8 border-mred mb-2">Borrow</h2>
-          <Statistic label="APY" value={`4%`} />
-          <Statistic label="Total Borrowed" value={`1,232,633 USDM`} />
+          <Statistic label="APY" value={`${borrowRatePerBlockUSDM}%`} />
+          <Statistic label="Total Borrowed" value={`${totalBorrowsUSDM} USDM`} />
           <Statistic label="24h Volume" value={`52,342 USDM`} />
         </div>
         <div className="rounded-lg border-2 border-black p-8">
           <h2 className="text-2xl border-b-8 border-mred mb-2">Supply</h2>
-          <Statistic label="APY" value={`4%`} />
-          <Statistic label="Total Supplied" value={`1,232,633 USDM`} />
+          <Statistic label="APY" value={`${supplyRatePerBlockUSDM}%`} />
+          <Statistic label="Total Supplied" value={`${totalSupplyUSDM} USDM`} />
           <Statistic label="24h Volume" value={`52,342 USDM`} />
         </div>
       </div>
@@ -181,17 +186,17 @@ const Liquidity = () => {
               onClick={() => {
                 switch(action) {
                   case 'borrow':
-                    return borrowUSDM(borrowInputAmount);
+                    return util.borrowUSDM(borrowInputAmount);
                   case 'repay':
-                    return repayBorrowUSDM(borrowInputAmount);
+                    return util.repayBorrowUSDM(borrowInputAmount);
                   case 'supply':
-                    return lendUSDM(supplyInputAmount);
+                    return util.lendUSDM(supplyInputAmount);
                   case 'withdraw':
-                    return redeemUnderlyingUSDM(supplyInputAmount);
+                    return util.redeemUnderlyingUSDM(supplyInputAmount);
                   case 'collateralize_eth':
-                    return lendETH(ethInputAmount);
+                    return util.lendETH(ethInputAmount);
                   case 'withdraw_eth':
-                    return redeemUnderlyingETH(ethInputAmount);
+                    return util.redeemUnderlyingETH(ethInputAmount);
                   default: return
                 }
               }}
