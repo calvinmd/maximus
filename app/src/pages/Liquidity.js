@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
 
+import {
+  enterMarkets,
+  lendETH,
+  lendUSDM,
+  borrowUSDM,
+  repayBorrowUSDM,
+  redeemUnderlyingUSDM,
+  redeemUnderlyingETH,
+} from '../util'
+
 import { Button } from '../components/Button';
 import { Statistic } from '../components/Statistic';
 
@@ -163,7 +173,29 @@ const Liquidity = () => {
               <Button label="max" onClick={handleClickMax} className="border border-mred rounded p-1 text-sm text-mred hover:text-mred"/>
             </div>
 
-            <Button label="Execute" disabled={isSubmitDisabled()} type="submit" className={`inline-block text-xs px-4 py-2 leading-none border rounded text-white mt-4 lg:mt-0 ${isSubmitDisabled() ? "bg-gray-400 cursor-not-allowed" : "bg-mred"}`} />
+            <Button
+              label="Execute"
+              disabled={isSubmitDisabled()}
+              type="submit"
+              className={`inline-block text-xs px-4 py-2 leading-none border rounded text-white mt-4 lg:mt-0 ${isSubmitDisabled() ? "bg-gray-400 cursor-not-allowed" : "bg-mred"}`}
+              onClick={() => {
+                switch(action) {
+                  case 'borrow':
+                    return borrowUSDM(borrowInputAmount);
+                  case 'repay':
+                    return repayBorrowUSDM(borrowInputAmount);
+                  case 'supply':
+                    return lendUSDM(supplyInputAmount);
+                  case 'withdraw':
+                    return redeemUnderlyingUSDM(supplyInputAmount);
+                  case 'collateralize_eth':
+                    return lendETH(ethInputAmount);
+                  case 'withdraw_eth':
+                    return redeemUnderlyingETH(ethInputAmount);
+                  default: return
+                }
+              }}
+            />
           </form>
         </div>
       </div>

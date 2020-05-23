@@ -45,11 +45,11 @@ console.log('mUSDM ', mUSDM)
  * @param address? - sender ethereum address
  * @param options? - gas, gasPrice, etc
 **/
-export async function enterMarketUSDM(address, options = {}) {
+export async function enterMarkets(address, options = {}) {
   const addr = address || window.ethereum.selectedAddress
   if (!addr) throw new Error('Ethereum Address required.')
   try {
-    return comptroller.enterMarkets([mUSDM.address], {
+    return comptroller.enterMarkets([mUSDM.address, mETH.address], {
       from: addr,
       gas: 2500000,
       // nonce: await window.web3.eth.getTransactionCount(addr),
@@ -124,4 +124,113 @@ export async function borrowUSDM(amount, address, options = {}) {
     console.error(e)
   }
 }
+
+
+/*
+ * checkMembership
+ * @param address? - borrower ethereum address
+ * @param options? - gas, gasPrice, etc
+**/
+export async function checkMembership(address, mToken = 'mUSDM', options = {}) {
+  const addr = address || window.ethereum.selectedAddress
+  if (!addr) throw new Error('Ethereum Address required.')
+  try {
+    if (mToken.toLowerCase() === 'musdm' || mToken.toLowerCase() === 'usdm') {
+      return comptroller.checkMembership(address, mUSDM, {
+        from: addr,
+        gas: 2500000,
+        // nonce: await window.web3.eth.getTransactionCount(addr),
+        ...options,
+      })
+    }
+    if (mToken.toLowerCase() === 'meth' || mToken.toLowerCase() === 'eth') {
+      return comptroller.checkMembership(address, mETH, {
+        from: addr,
+        gas: 2500000,
+        // nonce: await window.web3.eth.getTransactionCount(addr),
+        ...options,
+      })
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+
+/*
+ * repayBorrowUSDM
+ * @param amount* - amount repay
+ * @param options? - gas, gasPrice, etc
+**/
+export async function repayBorrowUSDM(amount, options = {}) {
+  try {
+    return mUSDM.repayBorrow(amount, {
+      from: window.ethereum.selectedAddress,
+      gas: 2500000,
+      // nonce: await window.web3.eth.getTransactionCount(addr),
+      ...options,
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+
+/*
+ * repayBorrowETH
+ * @param amount* - amount repay
+ * @param options? - gas, gasPrice, etc
+**/
+export async function repayBorrowETH(amount, options = {}) {
+  try {
+    return mETH.repayBorrow({
+      from: window.ethereum.selectedAddress,
+      value: amount,
+      gas: 2500000,
+      // nonce: await window.web3.eth.getTransactionCount(addr),
+      ...options,
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+
+/*
+ * redeemUnderlyingUSDM
+ * @param amount* - amount underlying to redeem
+ * @param options? - gas, gasPrice, etc
+**/
+export async function redeemUnderlyingUSDM(amount, options = {}) {
+  try {
+    return mUSDM.redeemUnderlying(amount, {
+      from: window.ethereum.selectedAddress,
+      gas: 2500000,
+      // nonce: await window.web3.eth.getTransactionCount(addr),
+      ...options,
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+
+/*
+ * redeemUnderlyingETH
+ * @param amount* - amount underlying to redeem
+ * @param options? - gas, gasPrice, etc
+**/
+export async function redeemUnderlyingETH(amount, options = {}) {
+  try {
+    return mETH.redeemUnderlying(amount, {
+      from: window.ethereum.selectedAddress,
+      gas: 2500000,
+      // nonce: await window.web3.eth.getTransactionCount(addr),
+      ...options,
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 

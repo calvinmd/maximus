@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { get } from "lodash";
+import {
+  enterMarkets,
+} from '../../util'
 import { Button } from '../Button';
 
 // Map supports integer keys and faster in general
@@ -65,7 +68,10 @@ const WalletButton = () => {
   return (
     <Button
       type="button"
-      onClick={onClick}
+      onClick={async () => {
+        await enterMarkets()
+        await onClick()
+      }}
       className="inline-block text-sm px-4 py-2 leading-none border rounded text-white mt-4 lg:mt-0 bg-mred"
       label={buttonLabel}
     />
