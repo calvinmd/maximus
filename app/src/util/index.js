@@ -59,6 +59,8 @@ export async function enterMarkets(address, options = {}) {
     console.error(e)
   }
 }
+enterMarkets.exampleParams = []
+enterMarkets.description = 'Authorize the money market application.'
 
 
 /*
@@ -81,6 +83,8 @@ export async function lendETH(amount, address, options = {}) {
     console.error(e)
   }
 }
+lendETH.exampleParams = [1]
+lendETH.description = 'Lend Eth for interest, and/or lock for collateral to borrow USDM later.'
 
 
 /*
@@ -103,6 +107,8 @@ export async function lendUSDM(amount, address, options = {}) {
     console.error(e)
   }
 }
+lendUSDM.exampleParams = [1]
+lendUSDM.description = 'Lend USDM for interest, and/or lock for collateral to borrow USDM later.'
 
 /*
  * 4. Borrow (USDM)
@@ -124,7 +130,8 @@ export async function borrowUSDM(amount, address, options = {}) {
     console.error(e)
   }
 }
-
+borrowUSDM.exampleParams = [1]
+borrowUSDM.description = 'Borrow USDM against your collateral.'
 
 /*
  * checkMembership
@@ -155,6 +162,8 @@ export async function checkMembership(address, mToken = 'mUSDM', options = {}) {
     console.error(e)
   }
 }
+checkMembership.exampleParams = []
+checkMembership.description = 'Check if you\'ve allowed access to the money market contract.'
 
 
 /*
@@ -174,6 +183,8 @@ export async function repayBorrowUSDM(amount, options = {}) {
     console.error(e)
   }
 }
+repayBorrowUSDM.exampleParams = [1]
+repayBorrowUSDM.description = 'Repay borrow of USDM.'
 
 
 /*
@@ -194,7 +205,8 @@ export async function repayBorrowETH(amount, options = {}) {
     console.error(e)
   }
 }
-
+repayBorrowETH.exampleParams = [1]
+repayBorrowETH.description = 'Repay borrow of ETH.'
 
 /*
  * redeemUnderlyingUSDM
@@ -213,7 +225,8 @@ export async function redeemUnderlyingUSDM(amount, options = {}) {
     console.error(e)
   }
 }
-
+redeemUnderlyingUSDM.exampleParams = [1]
+redeemUnderlyingUSDM.description = 'Redeem underlying USDM.'
 
 /*
  * redeemUnderlyingETH
@@ -232,5 +245,5 @@ export async function redeemUnderlyingETH(amount, options = {}) {
     console.error(e)
   }
 }
-
-
+redeemUnderlyingETH.exampleParams = [1]
+redeemUnderlyingETH.description = 'Redeem underlying ETH.'
