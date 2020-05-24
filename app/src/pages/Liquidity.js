@@ -136,6 +136,7 @@ const Liquidity = () => {
         <Button label="WITHDRAW" onClick={() => handleClickAction("withdraw")} className={getTabButtonClassNames(action === 'withdraw')} />
         <Button label="COLLATERALIZE ETH" onClick={() => handleClickAction("collateralize_eth")} className={getTabButtonClassNames(action === 'collateralize_eth')} />
         <Button label="WITHDRAW ETH" onClick={() => handleClickAction("withdraw_eth")} className={getTabButtonClassNames(action === 'withdraw_eth')} />
+        <Button label="ADD OR REMOVE LIQUIDITY (Rinkeby)" onClick={() => window.open("https://uniswap.exchange/add/0x1e2FbB503909F03B8a2a53570f3104ceca8c422D-0xc778417E063141139Fce010982780140Aa0cD5Ab")} className={getTabButtonClassNames(action === 'uniswap')} />
       </div>
       <div>
         {/* <div className={`space-x-2 text-center ${side === 'borrow' ? '' : 'hidden'}`}>
