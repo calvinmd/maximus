@@ -136,8 +136,10 @@ const Liquidity = () => {
         <Button label="WITHDRAW" onClick={() => handleClickAction("withdraw")} className={getTabButtonClassNames(action === 'withdraw')} />
         <Button label="COLLATERALIZE ETH" onClick={() => handleClickAction("collateralize_eth")} className={getTabButtonClassNames(action === 'collateralize_eth')} />
         <Button label="WITHDRAW ETH" onClick={() => handleClickAction("withdraw_eth")} className={getTabButtonClassNames(action === 'withdraw_eth')} />
-        <Button label="ADD UNISWAPv2 LIQUIDITY (Rinkeby)" onClick={() => window.open("https://uniswap.exchange/add/0x3d2aB6aa7BAaef25a39D1B3b1ce22418f3ef0223-0xc778417E063141139Fce010982780140Aa0cD5Ab")} className={getTabButtonClassNames(action === 'uniswap')} />
-        <Button label="REMOVE UNISWAPv2 LIQUIDITY (Rinkeby)" onClick={() => window.open("https://uniswap.exchange/remove/0x3d2aB6aa7BAaef25a39D1B3b1ce22418f3ef0223-0xc778417E063141139Fce010982780140Aa0cD5Ab")} className={getTabButtonClassNames(action === 'uniswap')} />
+        <Button label="ADD UNISWAPv2 USDM/ETH (Rinkeby)" onClick={() => window.open("https://uniswap.exchange/add/0x3d2aB6aa7BAaef25a39D1B3b1ce22418f3ef0223-0xc778417E063141139Fce010982780140Aa0cD5Ab")} className={getTabButtonClassNames(action === 'uniswap')} />
+        <Button label="REMOVE UNISWAPv2 USDM/ETH (Rinkeby)" onClick={() => window.open("https://uniswap.exchange/remove/0x3d2aB6aa7BAaef25a39D1B3b1ce22418f3ef0223-0xc778417E063141139Fce010982780140Aa0cD5Ab")} className={getTabButtonClassNames(action === 'uniswap')} />
+        <Button label="ADD UNISWAPv2 USDM/MXS (Rinkeby)" onClick={() => window.open("https://uniswap.exchange/add/0x3d2aB6aa7BAaef25a39D1B3b1ce22418f3ef0223-0x94082fe34E939EDd3FDE466Ea4a58cD5bFCF3048")} className={getTabButtonClassNames(action === 'uniswap')} />
+        <Button label="REMOVE UNISWAPv2 USDM/MXS (Rinkeby)" onClick={() => window.open("https://uniswap.exchange/remove/0x3d2aB6aa7BAaef25a39D1B3b1ce22418f3ef0223-0x94082fe34E939EDd3FDE466Ea4a58cD5bFCF3048")} className={getTabButtonClassNames(action === 'uniswap')} />
       </div>
       <div>
         {/* <div className={`space-x-2 text-center ${side === 'borrow' ? '' : 'hidden'}`}>
