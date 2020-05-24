@@ -28,6 +28,7 @@ const Liquidity = () => {
   const [supplyInputAmount, setSupplyInputAmount] = useState('');
   // const [withdrawInputAmount, setWithdrawInputAmount] = useState('');
   const [ethInputAmount, setETHInputAmount] = useState('');
+  const [inputAmount, setInputAmount] = useState('');
 
   const [walletUSDMBalance, setWalletUSDMBalance] = useState(0); // amount of USD in wallet
   const [walletETHBalance, setWalletETHBalance] = useState(0); // amount of ETH in wallet
@@ -164,43 +165,45 @@ const Liquidity = () => {
             </div>
           </div>
           <form onSubmit={handleSubmit} className="space-y-2">
+            <div className={`border-b-2 border-black`}>
+              <input type="text" className="text-5xl" placeholder="0" value={inputAmount} onChange={(e) => setInputAmount(e.target.value)} />
+            </div>
             {/* BORROW */}
-            <div className={`border-b-2 border-black ${isBorrow ? '' : 'hidden'}`}>
+            {/*<div className={`border-b-2 border-black ${isBorrow ? '' : 'hidden'}`}>
               <input type="text" className="text-5xl" placeholder="0" value={borrowInputAmount} onChange={handleChangeBorrowAmount} />
               <Button label="max" onClick={handleClickMax} className="border border-mred rounded p-1 text-sm text-mred hover:text-mred"/>
-            </div>
+            </div>*/}
 
             {/* SUPPLY */}
-            <div className={`border-b-2 border-black ${isSupply ? '' : 'hidden'}`}>
+            {/*<div className={`border-b-2 border-black ${isSupply ? '' : 'hidden'}`}>
               <input type="text" className="text-5xl" placeholder="0" value={supplyInputAmount} onChange={handleChangeSupplyAmount} />
               <Button label="max" onClick={handleClickMax} className="border border-mred rounded p-1 text-sm text-mred hover:text-mred"/>
-            </div>
+            </div>*/}
 
             {/* ETH */}
-            <div className={`border-b-2 border-black ${isSupply ? '' : 'hidden'}`}>
+            {/*<div className={`border-b-2 border-black ${isSupply ? '' : 'hidden'}`}>
               <input type="text" className="text-5xl" placeholder="0" value={ethInputAmount} onChange={handleChangeETHAmount} />
               <Button label="max" onClick={handleClickMax} className="border border-mred rounded p-1 text-sm text-mred hover:text-mred"/>
-            </div>
+            </div>*/}
 
             <Button
               label="Execute"
-              disabled={isSubmitDisabled()}
               type="submit"
-              className={`inline-block text-xs px-4 py-2 leading-none border rounded text-white mt-4 lg:mt-0 ${isSubmitDisabled() ? "bg-gray-400 cursor-not-allowed" : "bg-mred"}`}
+              className={`inline-block text-xs px-4 py-2 leading-none border rounded text-white mt-4 lg:mt-0 bg-mred`}
               onClick={() => {
                 switch(action) {
                   case 'borrow':
-                    return util.borrowUSDM(borrowInputAmount);
+                    return util.borrowUSDM(inputAmount);
                   case 'repay':
-                    return util.repayBorrowUSDM(borrowInputAmount);
+                    return util.repayBorrowUSDM(inputAmount);
                   case 'supply':
-                    return util.lendUSDM(supplyInputAmount);
+                    return util.lendUSDM(inputAmount);
                   case 'withdraw':
-                    return util.redeemUnderlyingUSDM(supplyInputAmount);
+                    return util.redeemUnderlyingUSDM(inputAmount);
                   case 'collateralize_eth':
-                    return util.lendETH(ethInputAmount);
+                    return util.lendETH(inputAmount);
                   case 'withdraw_eth':
-                    return util.redeemUnderlyingETH(ethInputAmount);
+                    return util.redeemUnderlyingETH(inputAmount);
                   default: return
                 }
               }}
