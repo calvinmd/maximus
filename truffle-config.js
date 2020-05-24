@@ -1,4 +1,6 @@
 const path = require("path");
+const HDWalletProvider = require("@truffle/hdwallet-provider");
+const mnemonic = 'gaze choice announce rug buyer destroy ribbon wrap because oxygen super load'
 
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
@@ -12,6 +14,14 @@ module.exports = {
       gasPrice: 1,
       // gas: 6700000,
     },
+    rinkeby: {
+      provider: function() {
+        return new HDWalletProvider(mnemonic, process.env.RINKEBY_PROVIDER)
+      },
+      from: "0x6dF9485e903173f41B99A73981a867F9E5315DE3",
+      network_id: 4,
+      // gas: 4612388 // Gas limit used for deploys
+    }
   },
   compilers: {
     solc: {

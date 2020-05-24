@@ -14,3 +14,10 @@ HackMoney 2020 Hackathon Project: Maximus by team Titans
 ## Helpful Docs
 
 - Check out our [documentation](http://truffleframework.com/docs/drizzle/getting-started) or any of the three repositories ([drizzle](https://github.com/trufflesuite/drizzle), [drizzle-react](https://github.com/trufflesuite/drizzle-react), [drizzle-react-components](https://github.com/trufflesuite/drizzle-react-components)).
+
+
+## Deployment
+
+get ether on deploy address
+import solidity pk into ethereum node
+ETH_NETWORK=rinkeby RINKEBY_PROVIDER=https://MY.RINKEBY.NODE truffle migrate --network rinkeby
