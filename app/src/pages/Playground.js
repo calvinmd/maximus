@@ -15,7 +15,7 @@ const Playground = () => {
     <div>
       <div>
         {Object.entries(util)
-          .filter(([key, method]) => !['comptroller', 'mUSDM', 'USDM', 'mETH'].includes(key))
+          .filter(([key, method]) => !['comptroller', 'mUSDM', 'USDM', 'mETH', 'USDM'].includes(key))
           .map(([key, method]) => {
           return (
             <Row key={key}>

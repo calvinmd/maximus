@@ -121,5 +121,6 @@ module.exports = function(deployer, network, accounts) {
     console.log(stats)
 
     fs.writeFileSync(`./addresses.${process.env.ETH_NETWORK || 'local'}.json`, stats, () => {})
+    fs.writeFileSync(`./app/src/addresses.${process.env.ETH_NETWORK || 'local'}.json`, stats, () => {})
   })
 };
