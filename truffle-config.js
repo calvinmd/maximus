@@ -10,7 +10,7 @@ module.exports = {
       port: 8545,
       network_id: "5777",
       gasPrice: 1,
-      gas: 100000000000,
+      // gas: 6700000,
     },
   },
   compilers: {

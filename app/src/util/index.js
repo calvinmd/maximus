@@ -1,6 +1,7 @@
 import { get } from 'lodash'
 
 import ERC20JSON from '../contracts/ERC20.json'
+import USDMJSON from '../contracts/USDM.json'
 import cErc20JSON from '../contracts/MErc20.json'
 import comptrollerJSON from '../contracts/Comptroller.json'
 
@@ -19,7 +20,7 @@ function getAddresses(networkId) {
 export const comptroller = window.web3.eth.contract(comptrollerJSON.abi).at(getAddresses(window.ethereum.networkId).Comptroller)
 export const mETH = window.web3.eth.contract(cErc20JSON.abi).at(getAddresses(window.ethereum.networkId).mETH)
 export const mUSDM = window.web3.eth.contract(cErc20JSON.abi).at(getAddresses(window.ethereum.networkId).mUSDM)
-export const USDM = window.web3.eth.contract(ERC20JSON.abi).at(getAddresses(window.ethereum.networkId).USDM)
+export const USDM = window.web3.eth.contract(USDMJSON.abi).at(getAddresses(window.ethereum.networkId).USDM)
 
 console.log('comptroller ', comptroller)
 console.log('mETH ', mETH)
@@ -153,19 +154,21 @@ export async function lendUSDM(amount, address, options = {}) {
   const addr = address || window.ethereum.selectedAddress
   if (!addr) throw new Error('Ethereum Address required.')
   try {
-    return mUSDM.mint(amount, {
-      from: addr,
-      gas: 2500000,
-      // nonce: await window.web3.eth.getTransactionCount(addr),
-      ...options,
-    }, () => {
-      console.log('Done.')
+    return _approve_mUSDM(amount, addr).then(r => {
+      mUSDM.mint(amount, {
+        from: addr,
+        gas: 2500000,
+        // nonce: await window.web3.eth.getTransactionCount(addr),
+        ...options,
+      }, () => {
+        console.log('Done.')
+      })
     })
   } catch (e) {
     console.error(e)
   }
 }
-lendUSDM.exampleParams = [1]
+lendUSDM.exampleParams = [100]
 lendUSDM.description = 'Lend USDM for interest, and/or lock for collateral to borrow USDM later.'
 
 /*
@@ -423,3 +426,26 @@ export async function supplyRatePerBlockUSDM(options = {}) {
 }
 supplyRatePerBlockUSDM.exampleParams = []
 supplyRatePerBlockUSDM.description = 'Supply Rate Per Block USDM.'
+
+
+/*
+ * faucetMintUSDM
+**/
+export async function faucetMintUSDM(amount, address, options = {}) {
+  return new Promise((resolve, reject) => {
+    try {
+      const addr = address || window.ethereum.selectedAddress
+      if (!addr) throw new Error('Ethereum Address required.')
+      USDM.allocateTo(addr, amount, (err, res) => {
+        if (err) throw new Error(err)
+        console.log('Done.', res)
+        return resolve(res)
+      })
+    } catch (e) {
+      console.error(e)
+      return reject(e)
+    }
+  })
+}
+faucetMintUSDM.exampleParams = [1000]
+faucetMintUSDM.description = 'Supply Rate Per Block USDM.'

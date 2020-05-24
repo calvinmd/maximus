@@ -27,13 +27,13 @@ module.exports = function(deployer, network, accounts) {
     await deployer.deploy(DAI); // LOCAL
     // await deployer.deploy(FaucetToken, 100000000, 'USDM', uint8 _decimalUnits, string memory _tokenSymbol); // LOCAL
     const dai = await DAI.deployed(); // LOCAL
-    // const dai = { address: '0xbf7a7169562078c96f0ec1a8afd6ae50f12e5a99' } // KOVAN - Compound DAI Contract
+    // const dai = { address: '0xbf7a7169562078c96f0ec1a8afd6ae50f12e5a99' } // KOVAN - Maximus DAI Contract
     // const dai = { address: '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359' } // MAINNET
 
     // Deploy Example USDM
     await deployer.deploy(USDM);
     const usdm = await USDM.deployed();
-    // const usdm = { address: '0x6e894660985207feb7cf89faf048998c71e8ee89' } // KOVAN - Compound USDM Contract
+    // const usdm = { address: '0x6e894660985207feb7cf89faf048998c71e8ee89' } // KOVAN - Maximus USDM Contract
     // const usdm = { address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48' } // MAINNET
 
     await deployer.deploy(MakerMedianizer) // LOCAL
@@ -61,12 +61,12 @@ module.exports = function(deployer, network, accounts) {
     await comptroller._setLiquidationIncentive(toWei('1.05', 'ether'))
     await comptroller._setMaxAssets(10)
 
-    await deployer.deploy(MErc20, dai.address, comptroller.address, daiInterestRateModel.address, toWei('0.2', 'gether'), 'Compound Dai', 'cDAI', '8')
+    await deployer.deploy(MErc20, dai.address, comptroller.address, daiInterestRateModel.address, toWei('0.2', 'gether'), 'Maximus Interest Dai', 'cDAI', '8')
     const cdai = await MErc20.deployed()
 
-    const mUsdm = await MErc20.new(usdm.address, comptroller.address, usdmInterestRateModel.address, toWei('0.2', 'finney'), 'Compound Usdc', 'mUSDM', '8')
+    const mUsdm = await MErc20.new(usdm.address, comptroller.address, usdmInterestRateModel.address, toWei('0.2', 'finney'), 'Maximus Interest USD', 'mUSDM', '8')
 
-    await deployer.deploy(MEther, comptroller.address, ethInterestRateModel.address, toWei('0.2', 'gether'), 'Compound Ether', 'mETH', '8')
+    await deployer.deploy(MEther, comptroller.address, ethInterestRateModel.address, toWei('0.2', 'gether'), 'Maximus Interest Ether', 'mETH', '8')
     const mEth = await MEther.deployed()
 
     await comptroller._supportMarket(cdai.address)
@@ -120,7 +120,9 @@ module.exports = function(deployer, network, accounts) {
 
     console.log(stats)
 
+    console.log(`Writing to ./addresses.${process.env.ETH_NETWORK || 'local'}.json`)
     fs.writeFileSync(`./addresses.${process.env.ETH_NETWORK || 'local'}.json`, stats, () => {})
+    console.log(`Writing to ./app/src/addresses.${process.env.ETH_NETWORK || 'local'}.json`)
     fs.writeFileSync(`./app/src/addresses.${process.env.ETH_NETWORK || 'local'}.json`, stats, () => {})
   })
 };

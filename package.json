@@ -7,6 +7,8 @@
     "test": "test"
   },
   "scripts": {
+    "dev:ganache": "ganache-cli -m 'gaze choice announce rug buyer destroy ribbon wrap because oxygen super load' -i 5777",
+    "dev:migrate": "truffle migrate --network develop",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
